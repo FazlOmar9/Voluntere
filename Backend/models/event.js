@@ -20,11 +20,18 @@ const eventSchema = new mongoose.Schema({
   community: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Community',
+    required: true,
   },
   volunteers: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'User',
+    default: [],
   },
+  status: {
+    type: String,
+    enum: ['Upcoming', 'Live', 'Closed', 'Cancelled', 'Ended'],
+    default: 'Upcoming',
+  }
 });
 
 module.exports = mongoose.model('Event', eventSchema);
