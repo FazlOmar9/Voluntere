@@ -20,7 +20,9 @@ const modSchema = new mongoose.Schema({
     },
     community: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Community'
+        ref: 'Community',
+        required: true,
+        immutable: true
     }
   });
 
