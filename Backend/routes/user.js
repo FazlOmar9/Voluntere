@@ -27,50 +27,50 @@ router.post('/', async (req, res) => {
 
 // update user by id
 router.put('/:id', async (req, res) => {
-    const { username, oldPassword, newPassword, events, communities } = req.body;
-    const updatedFields = {};
+  const { username, oldPassword, newPassword, events, communities } = req.body;
+  const updatedFields = {};
 
-    if (username) {
-        updatedFields.username = username;
+  if (username) {
+    updatedFields.username = username;
+  }
+
+  if (oldPassword && newPassword) {
+    const user = await User.findById(req.params.id);
+    const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
+    if (isPasswordMatch) {
+      updatedFields.password = await bcrypt.hash(newPassword, saltRounds);
+    } else {
+      return res.status(400).send('Invalid old password');
     }
+  }
 
-    if (oldPassword && newPassword) {
-        const user = await User.findById(req.params.id);
-        const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
-        if (isPasswordMatch) {
-            updatedFields.password = await bcrypt.hash(newPassword, saltRounds);
-        } else {
-            return res.status(400).send('Invalid old password');
-        }
-    }
+  if (events) {
+    updatedFields.events = events;
+  }
 
-    if (events) {
-        updatedFields.events = events;
-    }
+  if (communities) {
+    updatedFields.communities = communities;
+  }
 
-    if (communities) {
-        updatedFields.communities = communities;
-    }
-
-    const updatedUser = await User.findByIdAndUpdate(
-        req.params.id,
-        updatedFields,
-        { new: true }
-    );
-    res.send(updatedUser);
+  const updatedUser = await User.findByIdAndUpdate(
+    req.params.id,
+    updatedFields,
+    { new: true }
+  );
+  res.send(updatedUser);
 });
 
 // delete user by id
 router.delete('/:id', async (req, res) => {
-    const { password } = req.body;
-    const user = await User.findById(req.params.id);
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
-    if (isPasswordMatch) {
-        await User.findByIdAndDelete(req.params.id);
-        res.send('User deleted successfully');
-    } else {
-        res.status(400).send('Invalid password');
-    }
+  const { password } = req.body;
+  const user = await User.findById(req.params.id);
+  const isPasswordMatch = await bcrypt.compare(password, user.password);
+  if (isPasswordMatch) {
+    await User.findByIdAndDelete(req.params.id);
+    res.send('User deleted successfully');
+  } else {
+    res.status(400).send('Invalid password');
+  }
 });
 
 module.exports = router;

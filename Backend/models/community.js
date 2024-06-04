@@ -4,24 +4,25 @@ const communitySchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   events: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: 'Event'
+    ref: 'Event',
+    default: [],
   },
   mod: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Mod'
+    ref: 'Mod',
   },
   users: {
     type: [mongoose.Schema.Types.ObjectId],
-    ref: 'User'
-  }
+    ref: 'User',
+  },
 });
 
 module.exports = mongoose.model('Community', communitySchema);
