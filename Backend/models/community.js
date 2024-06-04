@@ -19,9 +19,10 @@ const communitySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Mod',
   },
-  users: {
+  members: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'User',
+    default: [],
   },
 });
 
