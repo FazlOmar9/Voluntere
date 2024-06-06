@@ -4,7 +4,11 @@ const Community = require('../models/community');
 
 // get all communities, filters are passed in body of request
 router.get('/', async (req, res) => {
-  const communities = await Community.find(req.body);
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const skip = (page - 1) * limit;
+
+  const communities = await Community.find(req.body).skip(skip).limit(limit);
   res.send(communities);
 });
 
