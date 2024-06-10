@@ -1,7 +1,9 @@
+import CommunityList from "./components/CommunityList"
+import EventList from "./components/EventList"
 
 const App = () => {
   return (
-    <div>App</div>
+    <EventList />
   )
 }
 
