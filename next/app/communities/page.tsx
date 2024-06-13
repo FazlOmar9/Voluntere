@@ -1,9 +1,24 @@
-import CommunityList from '@/components/CommunityList'
+import CommunityList from '@/components/CommunityList';
+import { fetchCommunities } from '@/hooks/useCommunity';
+import {
+  HydrationBoundary,
+  dehydrate,
+  QueryClient,
+} from '@tanstack/react-query';
 
-const page = () => {
+const page = async () => {
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['communities'],
+    queryFn: fetchCommunities,
+  });
+
   return (
-    <CommunityList />
-  )
-}
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <CommunityList />
+    </HydrationBoundary>
+  );
+};
 
-export default page
+export default page;

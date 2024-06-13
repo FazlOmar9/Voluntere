@@ -9,13 +9,12 @@ export interface Community {
   mod: string;
   members: [string];
 }
+export const fetchCommunities = () =>
+  apiClient.get<Community[]>('/community?limit=20').then((res) => res.data);
 
 const useCommunity = () => {
-  const fetchCommunities = () =>
-    apiClient.get<Community[]>('/community?limit=20').then((res) => res.data);
-
   return useQuery({
-    queryKey: ['community'],
+    queryKey: ['communities'],
     queryFn: fetchCommunities,
   });
 };

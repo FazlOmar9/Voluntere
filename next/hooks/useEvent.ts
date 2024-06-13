@@ -12,12 +12,12 @@ export interface Event {
   status: 'Upcoming' | 'Live' | 'Closed' | 'Cancelled' | 'Ended';
 }
 
-const useEvent = () => {
-  const fetchEvents = () =>
-    apiClient.get<Event[]>('/event/?limit=20').then((res) => res.data);
+export const fetchEvents = () =>
+  apiClient.get<Event[]>('/event/?limit=20').then((res) => res.data);
 
+const useEvent = () => {
   return useQuery({
-    queryKey: ['event'],
+    queryKey: ['events'],
     queryFn: fetchEvents,
   });
 };

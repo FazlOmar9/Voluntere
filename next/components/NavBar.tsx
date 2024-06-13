@@ -270,14 +270,15 @@ const NAV_ITEMS: Array<NavItem> = [
       {
         label: 'The people',
         subLabel: 'Meet the team behind Voluntere',
-        href: '#',
+        href: '/about/team',
       },
       {
         label: 'The goal',
         subLabel: 'Know more about our dream',
-        href: '#',
+        href: '/about/goal',
       },
     ],
+    href: '/about',
   },
   // {
   //   label: 'Find Work',

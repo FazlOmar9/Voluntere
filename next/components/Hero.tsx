@@ -84,7 +84,7 @@ export default function Hero() {
                 top={'-15px'}
                 transform={'rotate(10deg)'}
               >
-                Starting at $15/mo
+                Start Now- It's free!
               </Text>
             </Box>
           </Stack>
