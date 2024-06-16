@@ -92,6 +92,8 @@ const TestimonialAvatar = ({
 };
 
 export default function AboutTeam() {
+  const testimonialMessage = `Hey, I'm Fazl. I'm a fullstack developer and the founder of Voluntere. Super skilled dude with a passion for helping others.`
+
   return (
     <Box bg={useColorModeValue('gray.100', 'gray.700')}>
       <Container maxW={'7xl'} py={16} as={Stack} spacing={12}>
@@ -108,8 +110,7 @@ export default function AboutTeam() {
           <Testimonial>
             <TestimonialContent>
               <TestimonialText>
-                Hey, I'm Fazl. I'm a fullstack developer and the CEO of
-                Voluntere. Super skilled dude with a passion for helping others.
+                {testimonialMessage}
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar
@@ -121,8 +122,7 @@ export default function AboutTeam() {
           <Testimonial>
             <TestimonialContent>
               <TestimonialText>
-                Hey, I'm Fazl. I'm a fullstack developer and the CEO of
-                Voluntere. Super skilled dude with a passion for helping others.
+                {testimonialMessage}
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar
@@ -134,8 +134,7 @@ export default function AboutTeam() {
           <Testimonial>
             <TestimonialContent>
               <TestimonialText>
-                Hey, I'm Fazl. I'm a fullstack developer and the CEO of
-                Voluntere. Super skilled dude with a passion for helping others.
+                {testimonialMessage}
               </TestimonialText>
             </TestimonialContent>
             <TestimonialAvatar

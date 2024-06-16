@@ -7,75 +7,101 @@ const saltRounds = 10;
 
 // get all mods, filters are passed in body of request, exclude password
 router.get('/', async (req, res) => {
-  const mods = await Mod.find(req.body).select('-password');
-  res.send(mods);
+  try {
+    const mods = await Mod.find(req.body).select('-password');
+    res.send(mods);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 });
 
 // get mod by id
 router.get('/:id', async (req, res) => {
-  const mod = await Mod.findById(req.params.id);
-  res.send(mod);
+  try {
+    const mod = await Mod.findById(req.params.id);
+    res.send(mod);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 });
 
 // create a new mod
 router.post('/', async (req, res) => {
-  const mod = new Mod(req.body);
-  mod.password = await bcrypt.hash(mod.password, saltRounds);
-  await mod.save();
-  res.send(mod);
+  try {
+    const mod = new Mod(req.body);
+    mod.password = await bcrypt.hash(mod.password, saltRounds);
+    await mod.save();
+    res.send(mod);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 });
 
 // auth a login
 router.post('/auth', async (req, res) => {
-  const { username, password } = req.body;
-  const mod = await Mod.findOne({ username });
-  if (mod) {
-    const isPasswordMatch = await bcrypt.compare(password, mod.password);
-    if (isPasswordMatch) {
-      res.send(mod);
+  try {
+    const { username, password } = req.body;
+    const mod = await Mod.findOne({ username });
+    if (mod) {
+      const isPasswordMatch = await bcrypt.compare(password, mod.password);
+      if (isPasswordMatch) {
+        res.send(mod);
+      } else {
+        res.status(400).send({ message: 'Invalid password' });
+      }
     } else {
-      res.status(400).send('Invalid password');
+      res.status(400).send({ message: 'Mod not found' });
     }
-  } else {
-    res.status(400).send('Mod not found');
+  } catch (error) {
+    res.status(500).send({ message: error.message });
   }
 });
 
 // update mod by id
 router.put('/:id', async (req, res) => {
-  const { username, oldPassword, newPassword } = req.body;
-  const updatedFields = {};
+  try {
+    const { username, oldPassword, newPassword } = req.body;
+    const updatedFields = {};
 
-  if (username) {
-    updatedFields.username = username;
-  }
-
-  if (oldPassword && newPassword) {
-    const mod = await Mod.findById(req.params.id);
-    const isPasswordMatch = await bcrypt.compare(oldPassword, mod.password);
-    if (isPasswordMatch) {
-      updatedFields.password = await bcrypt.hash(newPassword, saltRounds);
-    } else {
-      return res.status(400).send('Invalid old password');
+    if (username) {
+      updatedFields.username = username;
     }
-  }
 
-  const updatedMod = await Mod.findByIdAndUpdate(req.params.id, updatedFields, {
-    new: true,
-  });
-  res.send(updatedMod);
+    if (oldPassword && newPassword) {
+      const mod = await Mod.findById(req.params.id);
+      const isPasswordMatch = await bcrypt.compare(oldPassword, mod.password);
+      if (isPasswordMatch) {
+        updatedFields.password = await bcrypt.hash(newPassword, saltRounds);
+      } else {
+        return res.status(400).send({ message: 'Invalid old password' });
+      }
+    }
+
+    const updatedMod = await Mod.findByIdAndUpdate(
+      req.params.id,
+      updatedFields,
+      { new: true }
+    );
+    res.send(updatedMod);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
 });
 
 // delete mod by id
 router.delete('/:id', async (req, res) => {
-  const { password } = req.body;
-  const mod = await Mod.findById(req.params.id);
-  const isPasswordMatch = await bcrypt.compare(password, mod.password);
-  if (isPasswordMatch) {
-    await Mod.findByIdAndDelete(req.params.id);
-    res.send('Mod deleted successfully');
-  } else {
-    res.status(400).send('Invalid password');
+  try {
+    const { password } = req.body;
+    const mod = await Mod.findById(req.params.id);
+    const isPasswordMatch = await bcrypt.compare(password, mod.password);
+    if (isPasswordMatch) {
+      await Mod.findByIdAndDelete(req.params.id);
+      res.send({ message: 'Mod deleted successfully' });
+    } else {
+      res.status(400).send({ message: 'Invalid password' });
+    }
+  } catch (error) {
+    res.status(500).send({ message: error.message });
   }
 });
 

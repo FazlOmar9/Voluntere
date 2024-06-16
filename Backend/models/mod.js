@@ -17,7 +17,11 @@ const modSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-  }
+  },
+  profileImage: {
+    type: String,
+    default: '',
+  },
 });
 
 module.exports = mongoose.model('Mod', modSchema);

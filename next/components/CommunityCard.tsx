@@ -22,6 +22,7 @@ const CommunityCard = ({ children: community }: Props) => {
     >
       <Image 
         src={'https://via.placeholder.com/150'}
+        alt='Community Image'
         height='150px'
         width='100%'
         objectFit='cover'

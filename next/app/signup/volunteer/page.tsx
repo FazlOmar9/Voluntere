@@ -1,9 +1,9 @@
-import Choice from '@/components/SignupChoice'
+import UserSignup from '@/components/UserSignup'
 import React from 'react'
 
 const page = () => {
   return (
-    <Choice />
+    <UserSignup />
   )
 }
 

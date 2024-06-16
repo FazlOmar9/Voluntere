@@ -32,6 +32,10 @@ const eventSchema = new mongoose.Schema({
     enum: ['Upcoming', 'Live', 'Closed', 'Cancelled', 'Ended'],
     default: 'Upcoming',
   },
+  banner: {
+    type: String,
+    default: '',
+  },
 });
 
 module.exports = mongoose.model('Event', eventSchema);

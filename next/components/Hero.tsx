@@ -9,11 +9,13 @@ import {
   Stack,
   Text,
   createIcon,
-  useColorModeValue
+  useColorModeValue,
 } from '@chakra-ui/react';
 import Head from 'next/head';
 
 export default function Hero() {
+  const indiaMsg = `India's Largest`;
+  const startNowMsg = `Start Now- It's free!`;
   return (
     <>
       <Head>
@@ -35,15 +37,15 @@ export default function Hero() {
             fontSize={{ base: '2xl', sm: '4xl', md: '6xl' }}
             lineHeight={'110%'}
           >
-            India's Largest <br />
+            {indiaMsg} <br />
             <Text as={'span'} color={'green.400'}>
               volunteering platform
             </Text>
           </Heading>
-            <Text color={'gray.500'}>
-              Voluntere is a platform that connects volunteers with communities
-              in need of help.
-            </Text>
+          <Text color={'gray.500'}>
+            Voluntere is a platform that connects volunteers with communities in
+            need of help.
+          </Text>
           <Stack
             direction={'column'}
             spacing={3}
@@ -84,7 +86,7 @@ export default function Hero() {
                 top={'-15px'}
                 transform={'rotate(10deg)'}
               >
-                Start Now- It's free!
+                {startNowMsg}{' '}
               </Text>
             </Box>
           </Stack>

@@ -23,6 +23,10 @@ const communitySchema = new mongoose.Schema({
     ref: 'User',
     default: [],
   },
+  banner: {
+    type: String,
+    default: '',
+  },
 });
 
 module.exports = mongoose.model('Community', communitySchema);

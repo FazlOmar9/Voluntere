@@ -23,13 +23,18 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   events: {
-    // Array of event ids, which are references to the Event model
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'Event',
+    default: [],
   },
   communities: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'Community',
+    default: [],
+  },
+  profileImage: {
+    type: String,
+    default: '',
   },
 });
 

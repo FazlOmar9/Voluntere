@@ -19,6 +19,7 @@ const EventCard = ({ children: event }: Props) => {
     <Card padding='10px 10px 10px 10px'>
      <Image
       src={'https://via.placeholder.com/150'}
+      alt='Event Image'
       height="150px"
       width="100%"
       objectFit="cover"
