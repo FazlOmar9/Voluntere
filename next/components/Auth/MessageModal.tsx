@@ -1,10 +1,7 @@
 'use client';
 
-import { Modal, ModalOverlay, ModalContent, ModalBody, Icon, Text, Box } from '@chakra-ui/react';
+import { Box, Icon, Modal, ModalBody, ModalContent, ModalOverlay, Text } from '@chakra-ui/react';
 import { FaCheckCircle, FaTimesCircle } from 'react-icons/fa';
-import { useRouter } from 'next/router';
-import React from 'react';
-import Link from 'next/link';
 
 interface Props {
   isOpen: boolean;

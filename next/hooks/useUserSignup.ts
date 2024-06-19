@@ -1,7 +1,7 @@
 'use client';
 
 import apiClient from '@/services/apiClient';
-import { FormDataUS } from '@/components/UserSignup';
+import { FormDataUS } from '@/components/Auth/UserSignup';
 import { useEffect, useState } from 'react';
 
 const useUserSignup = (data: FormDataUS | null) => {

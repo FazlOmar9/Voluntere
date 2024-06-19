@@ -1,4 +1,4 @@
-import AboutGoal from "@/components/AboutGoal"
+import AboutGoal from "@/components/Main/AboutGoal"
 
 const page = () => {
   return (

@@ -1,12 +1,12 @@
 'use client';
 
 import { SimpleGrid } from '@chakra-ui/react';
-import useCommunity from '../hooks/useCommunity';
-import CardSkeleton from './CardSkeleton';
-import CommunityCard from './CommunityCard';
+import useEvent from '../../hooks/useEvent';
+import CardSkeleton from '../Community/CardSkeleton';
+import EventCard from './EventCard';
 
-const CommunityList = () => {
-  const { data: communities, error, isLoading } = useCommunity();
+const EventList = () => {
+  const { data: events, error, isLoading } = useEvent();
 
   // if (error) throw new Error(error.message);
   if (error) console.log(error.message);
@@ -22,12 +22,12 @@ const CommunityList = () => {
           ? Array(20)
               .fill(0)
               .map((_, index) => <CardSkeleton key={index} />)
-          : communities?.map((community, index) => (
-              <CommunityCard key={index}>{community}</CommunityCard>
+          : events?.map((event, index) => (
+              <EventCard key={index}>{event}</EventCard>
             ))}
       </SimpleGrid>
     </>
   );
 };
 
-export default CommunityList;
+export default EventList;

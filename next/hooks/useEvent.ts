@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import apiClient from '@/services/apiClient';
 
 export interface Event {
-  id: string;
+  _id: string;
   name: string;
   description: string;
   date: Date;

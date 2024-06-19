@@ -2,12 +2,12 @@ import { useQuery } from '@tanstack/react-query';
 import apiClient from '../services/apiClient';
 
 export interface Community {
-  id: string;
+  _id: string;
   name: string;
   description: string;
-  events: [string];
+  events: string[];
   mod: string;
-  members: [string];
+  members: string[];
 }
 export const fetchCommunities = () =>
   apiClient.get<Community[]>('/community?limit=20').then((res) => res.data);

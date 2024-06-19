@@ -1,13 +1,11 @@
 'use client';
-import React from 'react';
 import {
   Box,
-  VStack,
   Heading,
   Icon,
-  Button,
   LinkBox,
   LinkOverlay,
+  VStack
 } from '@chakra-ui/react';
 import { FaUser, FaUsers } from 'react-icons/fa';
 

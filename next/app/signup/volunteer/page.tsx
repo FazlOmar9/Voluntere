@@ -1,4 +1,4 @@
-import UserSignup from '@/components/UserSignup'
+import UserSignup from '@/components/Auth/UserSignup'
 import React from 'react'
 
 const page = () => {

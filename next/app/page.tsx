@@ -1,5 +1,4 @@
-import EventList from "@/components/EventList"
-import Hero from "@/components/Hero"
+import Hero from "@/components/Main/Hero"
 
 const page = () => {
   return (

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Providers from './providers';
-import NavBar from '@/components/NavBar';
-import Footer from '@/components/Footer';
+import NavBar from '@/components/Main/NavBar';
+import Footer from '@/components/Main/Footer';
 
 export const metadata: Metadata = {
   title: 'Voluntere',

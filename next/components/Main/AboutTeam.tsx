@@ -12,8 +12,6 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
-const imageUrl = require('../public/ghost-pfp.jpg');
-
 const Testimonial = ({ children }: { children: ReactNode }) => {
   return <Box>{children}</Box>;
 };

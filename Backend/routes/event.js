@@ -9,7 +9,14 @@ router.get('/', async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const skip = (page - 1) * limit;
 
-    const events = await Event.find(req.body).skip(skip).limit(limit);
+    const community = (req.query.community) || '';
+
+    let events = [];
+    if (community) {
+      events = await Event.find({ community: community }).skip(skip).limit(limit);
+    } else {
+      events = await Event.find().skip(skip).limit(limit);
+    }
     res.send(events);
   } catch (error) {
     res.status(500).send({ message: error.message });
