@@ -9,6 +9,7 @@ const EventList = () => {
   const { data: events, error, isLoading } = useEvent();
 
   // if (error) throw new Error(error.message);
+  // TODO: Handle error
   if (error) console.log(error.message);
 
   return (

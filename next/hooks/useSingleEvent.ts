@@ -4,7 +4,6 @@ import { Event } from './useEvent';
 
 const useSingleEvent = (id: string) => {
   const fetchSingleEvent = () => {
-    console.log('fetchSingleEvent');
     return apiClient.get<Event>(`/event/${id}`).then((res) => res.data);
   };
 

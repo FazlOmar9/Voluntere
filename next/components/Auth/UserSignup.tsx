@@ -18,7 +18,6 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import MessageModal from './MessageModal';
-import { useRouter } from 'next/router';
 
 const schema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
@@ -31,10 +30,12 @@ const schema = z.object({
     }),
   username: z
     .string()
-    .min(8, { message: 'Username must be at least 8 characters' }),
+    .min(8, { message: 'Username must be at least 8 characters' })
+    .refine(value => !/\s/.test(value), { message: 'Username must not contain whitespace' }),
   password: z
     .string()
-    .min(8, { message: 'Password must be at least 8 characters' }),
+    .min(8, { message: 'Password must be at least 8 characters' })
+    .refine(value => !/\s/.test(value), { message: 'Password must not contain whitespace' }),
 });
 
 export type FormDataUS = {
@@ -63,7 +64,7 @@ const UserSignup = () => {
   const onSubmit = (data: FormDataUS) => {
     setData(data);
   };
-
+  
   const { isSubmitted, setIsSubmitted, isLoading, error } = useUserSignup(data);
 
   const [showPassword, setShowPassword] = useState(false);
