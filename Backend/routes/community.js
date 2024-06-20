@@ -13,6 +13,7 @@ router.get('/', async (req, res) => {
     res.send(communities);
   } catch (error) {
     res.status(500).send({ message: error.message });
+    console.log(error.message)
   }
 });
 

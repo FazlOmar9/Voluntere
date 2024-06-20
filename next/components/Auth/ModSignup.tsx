@@ -22,7 +22,6 @@ import {
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import useModSignup from '@/hooks/useModSignup';
 
-// Define the validation schema using zod
 const schema = z.object({
   modEmail: z.string().email(),
   modMobile: z
@@ -104,7 +103,7 @@ const CommunitySignup = () => {
         boxShadow='xl'
       >
         <form onSubmit={handleSubmit(onSubmit)}>
-          <VStack spacing={5}>
+          <VStack spacing={4}>
             <Heading size='md'>Moderator info</Heading>
             <FormControl id='modEmail' isRequired>
               <FormLabel>Email</FormLabel>

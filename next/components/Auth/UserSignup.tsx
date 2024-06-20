@@ -8,10 +8,12 @@ import {
   Flex,
   FormControl,
   FormLabel,
+  Heading,
   Input,
   InputGroup,
   InputRightElement,
   Text,
+  VStack,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
@@ -31,11 +33,15 @@ const schema = z.object({
   username: z
     .string()
     .min(8, { message: 'Username must be at least 8 characters' })
-    .refine(value => !/\s/.test(value), { message: 'Username must not contain whitespace' }),
+    .refine((value) => !/\s/.test(value), {
+      message: 'Username must not contain whitespace',
+    }),
   password: z
     .string()
     .min(8, { message: 'Password must be at least 8 characters' })
-    .refine(value => !/\s/.test(value), { message: 'Password must not contain whitespace' }),
+    .refine((value) => !/\s/.test(value), {
+      message: 'Password must not contain whitespace',
+    }),
 });
 
 export type FormDataUS = {
@@ -51,7 +57,7 @@ const UserSignup = () => {
     register,
     handleSubmit,
     formState: { errors },
-    reset
+    reset,
   } = useForm<FormDataUS>({
     resolver: zodResolver(schema),
   });
@@ -64,7 +70,7 @@ const UserSignup = () => {
   const onSubmit = (data: FormDataUS) => {
     setData(data);
   };
-  
+
   const { isSubmitted, setIsSubmitted, isLoading, error } = useUserSignup(data);
 
   const [showPassword, setShowPassword] = useState(false);
@@ -79,8 +85,8 @@ const UserSignup = () => {
       setModalMessage('');
       setIsSubmitted(false);
       reset();
-    }, 2000)
-  }, [isSubmitted])
+    }, 2000);
+  }, [isSubmitted]);
 
   useEffect(() => {
     if (!error) return;
@@ -90,16 +96,16 @@ const UserSignup = () => {
     setTimeout(() => {
       setIsModalOpen(false);
       setModalMessage('');
-    }, 2000)
-  }, [error])
+    }, 2000);
+  }, [error]);
 
   return (
     <Flex
       direction='column'
       align='center'
       justify='center'
-      h='100vh'
       bg='gray.50'
+      minH='100vh'
     >
       <Box
         w={['90%', '85%', '80%', '400px']}
@@ -109,94 +115,107 @@ const UserSignup = () => {
         boxShadow='xl'
       >
         <form onSubmit={handleSubmit(onSubmit)}>
-          <FormControl id='name' isRequired mb={4}>
-            <FormLabel>Name</FormLabel>
-            <Input
-              {...register('name')}
-              isInvalid={!!errors.name}
-              errorBorderColor='red.300'
-            />
-
-            {errors.name && <Text color='red'>{errors.name.message}</Text>}
-          </FormControl>
-
-          <FormControl id='email' isRequired mb={4}>
-            <FormLabel>Email</FormLabel>
-            <Input
-              {...register('email')}
-              isInvalid={!!errors.email}
-              errorBorderColor='red.300'
-            />
-
-            {errors.email && <Text color='red'>{errors.email.message}</Text>}
-          </FormControl>
-
-          <FormControl id='mobile' isRequired mb={4}>
-            <FormLabel>Mobile</FormLabel>
-            <Input
-              {...register('mobile')}
-              isInvalid={!!errors.mobile}
-              errorBorderColor='red.300'
-            />
-
-            {errors.mobile && <Text color='red'>{errors.mobile.message}</Text>}
-          </FormControl>
-
-          <FormControl id='username' isRequired mb={4}>
-            <FormLabel>Username</FormLabel>
-            <Input
-              {...register('username')}
-              isInvalid={!!errors.username}
-              errorBorderColor='red.300'
-            />
-            {errors.username && (
-              <Text color='red'>
-                {<Text color='red'>{errors.username.message}</Text>}
-              </Text>
-            )}
-          </FormControl>
-
-          <FormControl id='password' isRequired mb={4}>
-            <FormLabel>Password</FormLabel>
-            <InputGroup>
+          <VStack>
+            <Heading size='md' pb='10px'>
+              Voluntere Info
+            </Heading>
+            <FormControl id='name' isRequired mb={4}>
+              <FormLabel>Name</FormLabel>
               <Input
-                {...register('password')}
-                type={showPassword ? 'text' : 'password'}
-                isInvalid={!!errors.password}
+                {...register('name')}
+                isInvalid={!!errors.name}
                 errorBorderColor='red.300'
               />
-              <InputRightElement h={'full'}>
-                <Button
-                  variant={'ghost'}
-                  onClick={() =>
-                    setShowPassword((showPassword) => !showPassword)
-                  }
-                >
-                  {showPassword ? <ViewIcon /> : <ViewOffIcon />}
-                </Button>
-              </InputRightElement>
-            </InputGroup>
 
-            {errors.password && (
-              <Text color='red'>{errors.password.message}</Text>
-            )}
-          </FormControl>
+              {errors.name && <Text color='red'>{errors.name.message}</Text>}
+            </FormControl>
 
-          <Button
-            type='submit'
-            isLoading={isLoading}
-            loadingText='Submitting'
-            size='lg'
-            bg={'blue.400'}
-            color={'white'}
-            _hover={{ bg: 'blue.500' }}
-            w='full'
-            mt={4}
-          >
-            Sign up
-          </Button>
+            <FormControl id='email' isRequired mb={4}>
+              <FormLabel>Email</FormLabel>
+              <Input
+                {...register('email')}
+                isInvalid={!!errors.email}
+                errorBorderColor='red.300'
+              />
+
+              {errors.email && <Text color='red'>{errors.email.message}</Text>}
+            </FormControl>
+
+            <FormControl id='mobile' isRequired mb={4}>
+              <FormLabel>Mobile</FormLabel>
+              <Input
+                {...register('mobile')}
+                isInvalid={!!errors.mobile}
+                errorBorderColor='red.300'
+              />
+
+              {errors.mobile && (
+                <Text color='red'>{errors.mobile.message}</Text>
+              )}
+            </FormControl>
+
+            <FormControl id='username' isRequired mb={4}>
+              <FormLabel>Username</FormLabel>
+              <Input
+                {...register('username')}
+                isInvalid={!!errors.username}
+                errorBorderColor='red.300'
+              />
+              {errors.username && (
+                <Text color='red'>
+                  {<Text color='red'>{errors.username.message}</Text>}
+                </Text>
+              )}
+            </FormControl>
+
+            <FormControl id='password' isRequired mb={4}>
+              <FormLabel>Password</FormLabel>
+              <InputGroup>
+                <Input
+                  {...register('password')}
+                  type={showPassword ? 'text' : 'password'}
+                  isInvalid={!!errors.password}
+                  errorBorderColor='red.300'
+                />
+                <InputRightElement h={'full'}>
+                  <Button
+                    variant={'ghost'}
+                    onClick={() =>
+                      setShowPassword((showPassword) => !showPassword)
+                    }
+                  >
+                    {showPassword ? <ViewIcon /> : <ViewOffIcon />}
+                  </Button>
+                </InputRightElement>
+              </InputGroup>
+
+              {errors.password && (
+                <Text color='red'>{errors.password.message}</Text>
+              )}
+            </FormControl>
+
+            <Button
+              type='submit'
+              isLoading={isLoading}
+              loadingText='Submitting'
+              size='lg'
+              bg={'blue.400'}
+              color={'white'}
+              _hover={{ bg: 'blue.500' }}
+              w='full'
+              mt={4}
+            >
+              Sign up
+            </Button>
+          </VStack>
         </form>
-        <MessageModal isOpen={isModalOpen} isSuccess={isSubmitted} link={modalLink} >{modalMessage}</MessageModal>
+        <MessageModal
+          isOpen={isModalOpen}
+          isSuccess={isSubmitted}
+          link={modalLink}
+        >
+          {modalMessage}
+        </MessageModal>
       </Box>
     </Flex>
   );

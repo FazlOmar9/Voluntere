@@ -5,11 +5,14 @@ import {
   Icon,
   LinkBox,
   LinkOverlay,
-  VStack
+  VStack,
 } from '@chakra-ui/react';
 import { FaUser, FaUsers } from 'react-icons/fa';
 
 const Choice = () => {
+  const vmsg = `I'm a volunteer`;
+  const cmsg = `I'm a community`;
+
   return (
     <Box
       w='100%'
@@ -24,7 +27,7 @@ const Choice = () => {
             w={['90vw', 'lg']}
             p={8}
             borderWidth={2}
-            borderColor="black"
+            borderColor='black'
             borderRadius='lg'
             boxShadow='lg'
             textAlign='center'
@@ -34,7 +37,7 @@ const Choice = () => {
           >
             <Icon as={FaUser} w={10} h={10} mb={4} />
             <Heading size='lg' mb={4}>
-              I'm a volunteer
+              {vmsg}
             </Heading>
             <LinkOverlay href='/signup/volunteer' />
           </Box>
@@ -44,7 +47,7 @@ const Choice = () => {
             w={['90vw', 'lg']}
             p={8}
             borderWidth={2}
-            borderColor="black"
+            borderColor='black'
             borderRadius='lg'
             boxShadow='lg'
             textAlign='center'
@@ -54,7 +57,7 @@ const Choice = () => {
           >
             <Icon as={FaUsers} w={10} h={10} mb={4} />
             <Heading size='lg' mb={4}>
-              I'm a community
+              {cmsg}
             </Heading>
             <LinkOverlay href='/signup/community' />
           </Box>

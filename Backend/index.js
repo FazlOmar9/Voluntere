@@ -9,7 +9,7 @@ const port = process.env.PORT || 3010;
 
 // Connect to MongoDB
 mongoose
-  .connect('mongodb://127.0.0.1:27017/voluntere')
+  .connect('mongodb://mongodb:27017/voluntere')
   .then(() => {
     console.log('Connected to MongoDB');
   })
@@ -17,7 +17,8 @@ mongoose
     console.error('Error connecting to MongoDB:', error);
   });
 
-app.use(cors({ origin: 'http://localhost', credentials: true}));
+
+app.use(cors({ origin: process.env.ORIGIN || 'http://localhost', credentials: true}));
 app.use(morgan('tiny'));
 app.use(helmet());
 
@@ -25,6 +26,11 @@ const mod = require('./routes/mod.js');
 const user = require('./routes/user.js');
 const community = require('./routes/community.js');
 const event = require('./routes/event.js');
+
+app.get('/', (_, res) => 
+  res.send('Hello World!')
+)
+
 
 app.use(express.json());
 app.use('/api/mod', mod);

@@ -1,0 +1,19 @@
+# ./backend/Dockerfile
+FROM node:20
+
+WORKDIR /usr/src/app
+
+COPY package*.json ./
+
+# Copy your source files
+COPY . .
+
+# Remove node_modules directory from host
+RUN rm -rf node_modules
+
+# Reinstall node_modules in the container
+RUN npm install
+
+EXPOSE 3010
+
+CMD [ "node", "index.js" ]
