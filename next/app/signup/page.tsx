@@ -1,10 +1,8 @@
-import Choice from '@/components/Auth/SignupChoice'
-import React from 'react'
+import Choice from '@/components/auth/SignupChoice';
+import React from 'react';
 
 const page = () => {
-  return (
-    <Choice />
-  )
-}
+  return <Choice />;
+};
 
-export default page
+export default page;

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { FormDataMS } from '@/components/Auth/ModSignup';
+import { FormDataMS } from '@/components/auth/ModSignup';
 import apiClient from '@/services/apiClient';
 
 const useModSignup = (data: FormDataMS | null) => {

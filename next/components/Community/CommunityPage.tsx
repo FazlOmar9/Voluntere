@@ -14,7 +14,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-import EventCard from '../Event/EventCard';
+import EventCard from '../event/EventCard';
 
 const CommunityPage = ({ id }: { id: string }) => {
   const { data: community, error, isLoading } = useSingleCommunity(id);
@@ -64,7 +64,12 @@ const CommunityPage = ({ id }: { id: string }) => {
           <Text>{community?.description}</Text>
         </CardBody>
       </Card>
-      <Card bgColor='rgba(0, 0, 0, 0.05)' p='10px 20px 10px 20px' mt='20px' mr='10px'>
+      <Card
+        bgColor='rgba(0, 0, 0, 0.05)'
+        p='10px 20px 10px 20px'
+        mt='20px'
+        mr='10px'
+      >
         <CardHeader>
           <Heading size='lg'>Events</Heading>
         </CardHeader>

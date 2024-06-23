@@ -1,9 +1,7 @@
-import AboutGoal from "@/components/Main/AboutGoal"
+import AboutGoal from '@/components/main/AboutGoal';
 
 const page = () => {
-  return (
-    <AboutGoal />
-  )
-}
+  return <AboutGoal />;
+};
 
-export default page
+export default page;

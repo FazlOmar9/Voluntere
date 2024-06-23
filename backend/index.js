@@ -9,7 +9,7 @@ const port = process.env.PORT || 3010;
 
 // Connect to MongoDB
 mongoose
-  .connect('mongodb://mongodb:27017/voluntere')
+  .connect('mongodb://127.0.0.1:27017/voluntere')
   .then(() => {
     console.log('Connected to MongoDB');
   })

@@ -25,6 +25,25 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.post('/auth', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.findOne({ username });
+    if (user) {
+      const isPasswordMatch = await bcrypt.compare(password, user.password);
+      if (isPasswordMatch) {
+        res.send(user);
+      } else {
+        res.status(400).send({ message: 'Invalid password' });
+      }
+    } else {
+      res.status(400).send({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
 // create a new user
 router.post('/', async (req, res) => {
   try {

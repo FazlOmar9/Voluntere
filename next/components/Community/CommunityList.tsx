@@ -1,6 +1,6 @@
 'use client';
 
-import { SimpleGrid } from '@chakra-ui/react';
+import { Divider, Heading, SimpleGrid } from '@chakra-ui/react';
 import useCommunity from '../../hooks/useCommunity';
 import CardSkeleton from './CardSkeleton';
 import CommunityCard from './CommunityCard';
@@ -13,6 +13,8 @@ const CommunityList = () => {
 
   return (
     <>
+      <Heading p='20px'>Communities</Heading>
+      <Divider borderColor='gray.400' />
       <SimpleGrid
         columns={{ sm: 1, md: 2, lg: 3, xl: 4, '2xl': 5 }}
         padding='10px'

@@ -1,9 +1,7 @@
-import Hero from "@/components/Main/Hero"
+import Hero from '@/components/main/Hero';
 
 const page = () => {
-  return (
-    <Hero />
-  )
-}
+  return <Hero />;
+};
 
-export default page
+export default page;

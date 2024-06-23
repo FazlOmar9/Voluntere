@@ -114,7 +114,7 @@ export default function AboutTeam() {
             <TestimonialAvatar
               src={''}
               name={'Fazl Omar'}
-              title={'CEO at Voluntere'}
+              title={'Founder at Voluntere'}
             />
           </Testimonial>
           <Testimonial>

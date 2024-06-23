@@ -1,10 +1,8 @@
-import ModSignup from '@/components/Auth/ModSignup'
-import React from 'react'
+import ModSignup from '@/components/auth/ModSignup';
+import React from 'react';
 
 const page = () => {
-  return (
-    <ModSignup />
-  )
-}
+  return <ModSignup />;
+};
 
-export default page
+export default page;

@@ -5,7 +5,6 @@ import {
   Stack,
   Container,
   Box,
-  Flex,
   Text,
   Heading,
   SimpleGrid,
@@ -13,46 +12,26 @@ import {
 
 export default function AboutGoal() {
   return (
-    <Box bg={'gray.500'} position={'relative'}>
-      <Flex
-        flex={1}
-        zIndex={0}
-        display={{ base: 'none', lg: 'flex' }}
-        position={'absolute'}
-        width={'100%'}
-        insetY={0}
-        right={0}
-      >
-        <Flex
-          bgGradient={'linear(to-r, gray.800 5%, transparent)'}
-          w={'full'}
-          h={'full'}
-        />
-      </Flex>
+    <Box>
       <Container maxW={'7xl'} zIndex={10} position={'relative'}>
         <Stack direction={{ base: 'column', lg: 'row' }}>
           <Stack
             flex={1}
-            color={'gray.400'}
             justify={{ lg: 'center' }}
             py={{ base: 4, md: 20, xl: 60 }}
           >
             <Box mb={{ base: 8, md: 20 }}>
               <Text
+                color={'gray.500'}
                 fontFamily={'heading'}
                 fontWeight={700}
                 textTransform={'uppercase'}
                 mb={3}
                 fontSize={'xl'}
-                color={'gray.300'}
               >
                 THE DREAM
               </Text>
-              <Heading
-                color={'white'}
-                mb={5}
-                fontSize={{ base: '3xl', md: '5xl' }}
-              >
+              <Heading mb={5} fontSize={{ base: '3xl', md: '5xl' }}>
                 Voluntere: Ek prem katha
               </Heading>
               <Text fontSize={'xl'} color={'gray.400'}>
@@ -65,14 +44,6 @@ export default function AboutGoal() {
               <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
                 {stats.map((stat) => (
                   <Box key={stat.title}>
-                    <Text
-                      fontFamily={'heading'}
-                      fontSize={'3xl'}
-                      color={'white'}
-                      mb={3}
-                    >
-                      {stat.title}
-                    </Text>
                     <Text fontSize={'xl'} color={'gray.400'}>
                       {stat.content}
                     </Text>
@@ -81,7 +52,6 @@ export default function AboutGoal() {
               </SimpleGrid>
             )}
           </Stack>
-          <Flex flex={1} />
         </Stack>
       </Container>
     </Box>
@@ -89,8 +59,8 @@ export default function AboutGoal() {
 }
 
 const StatsText = ({ children }: { children: ReactNode }) => (
-  <Text as={'span'} fontWeight={700} color={'white'}>
-    {children}
+  <Text as={'span'} fontWeight={700} color={'gray.700'}>
+    {children}<br />
   </Text>
 );
 
@@ -99,7 +69,7 @@ const stats = [
     title: '10+',
     content: (
       <>
-        <StatsText>Software modules</StatsText> for detailed monitoring and
+        <StatsText>10+ Software modules</StatsText> for detailed monitoring and
         real-time analytics
       </>
     ),
@@ -108,7 +78,7 @@ const stats = [
     title: '24/7',
     content: (
       <>
-        <StatsText>Analytics</StatsText> enabled right in your dashboard without
+        <StatsText>24/7 Analytics</StatsText> enabled right in your dashboard without
         history limitations
       </>
     ),
@@ -117,7 +87,7 @@ const stats = [
     title: '13%',
     content: (
       <>
-        <StatsText>Farms</StatsText> in North America has chosen NewLife™ as
+        <StatsText>13% Farms</StatsText> in North America has chosen NewLife™ as
         their management solution
       </>
     ),
@@ -126,7 +96,7 @@ const stats = [
     title: '250M+',
     content: (
       <>
-        <StatsText>Plants</StatsText> currently connected and monitored by the
+        <StatsText>250M+ Plants</StatsText> currently connected and monitored by the
         NewLife™ software
       </>
     ),

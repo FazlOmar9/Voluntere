@@ -1,10 +1,8 @@
-import UserSignup from '@/components/Auth/UserSignup'
-import React from 'react'
+import UserSignup from '@/components/auth/UserSignup';
+import React from 'react';
 
 const page = () => {
-  return (
-    <UserSignup />
-  )
-}
+  return <UserSignup />;
+};
 
-export default page
+export default page;

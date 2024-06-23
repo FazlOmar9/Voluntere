@@ -1,8 +1,8 @@
 'use client';
 
-import { SimpleGrid } from '@chakra-ui/react';
+import { Divider, Heading, SimpleGrid } from '@chakra-ui/react';
 import useEvent from '../../hooks/useEvent';
-import CardSkeleton from '../Community/CardSkeleton';
+import CardSkeleton from '../community/CardSkeleton';
 import EventCard from './EventCard';
 
 const EventList = () => {
@@ -14,6 +14,8 @@ const EventList = () => {
 
   return (
     <>
+      <Heading p='20px'>Events</Heading>
+      <Divider borderColor='gray.400' />
       <SimpleGrid
         columns={{ sm: 1, md: 2, lg: 3, xl: 4, '2xl': 5 }}
         padding='10px'

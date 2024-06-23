@@ -1,4 +1,4 @@
-import EventList from '@/components/Event/EventList';
+import EventList from '@/components/event/EventList';
 import { fetchEvents } from '@/hooks/useEvent';
 import {
   HydrationBoundary,

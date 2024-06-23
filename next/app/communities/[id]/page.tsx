@@ -1,4 +1,4 @@
-import CommunityPage from '@/components/Community/CommunityPage';
+import CommunityPage from '@/components/community/CommunityPage';
 import React from 'react';
 
 const page = ({ params }: { params: { id: string } }) => {

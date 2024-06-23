@@ -1,21 +1,59 @@
 'use client';
 
+import useLogin from '@/hooks/useLogin';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {
-  Flex,
   Box,
-  FormControl,
-  FormLabel,
-  Input,
-  Checkbox,
-  Stack,
-  Link,
   Button,
+  Checkbox,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
   Heading,
+  Input,
+  InputGroup,
+  InputRightElement,
+  Stack,
+  Tab,
+  TabList,
+  Tabs,
   Text,
-  useColorModeValue,
+  useColorModeValue
 } from '@chakra-ui/react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { z } from 'zod';
 
-export default function SignIn() {
+const schema = z.object({
+  username: z.string().min(1, { message: 'Username is required' }),
+  password: z
+    .string()
+    .min(8, { message: 'Password must be at least 8 characters' })
+    .regex(/^\S*$/, 'No whitespaces allowed'),
+});
+
+export type FormDataSI = z.infer<typeof schema>;
+
+const SignIn = () => {
+  const [showPassword, setShowPassword] = useState(false);
+  const [isModerator, setIsModerator] = useState(false);
+  const [data, setData] = useState<FormDataSI | null>(null);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormDataSI>({
+    resolver: zodResolver(schema),
+  });
+
+  const onSubmit: SubmitHandler<FormDataSI> = (data) => {
+    setData(data);
+  };
+
+  const { error, isLoading } = useLogin(data, isModerator);
+
   return (
     <Flex
       minH={'100vh'}
@@ -24,46 +62,91 @@ export default function SignIn() {
       bg={useColorModeValue('gray.50', 'gray.800')}
     >
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
-        <Stack align={'center'}>
-          <Heading fontSize={'4xl'}>Sign in to your account</Heading>
-        </Stack>
+        <Heading fontSize={'4xl'}>Sign in to your account</Heading>
         <Box
           rounded={'lg'}
           bg={useColorModeValue('white', 'gray.700')}
           boxShadow={'lg'}
           p={8}
         >
-          <Stack spacing={4}>
-            <FormControl id='email'>
-              <FormLabel>Email address</FormLabel>
-              <Input type='email' />
-            </FormControl>
-            <FormControl id='password'>
-              <FormLabel>Password</FormLabel>
-              <Input type='password' />
-            </FormControl>
-            <Stack spacing={10}>
-              <Stack
-                direction={{ base: 'column', sm: 'row' }}
-                align={'start'}
-                justify={'space-between'}
-              >
+          <Tabs
+            isFitted
+            variant='enclosed'
+            onChange={(index) => setIsModerator(index === 1)}
+          >
+            <TabList mb='1em'>
+              <Tab>
+                <Heading size='sm'>Volunteer</Heading>
+              </Tab>
+              <Tab>
+                <Heading size='sm'>Moderator</Heading>
+              </Tab>
+            </TabList>
+          </Tabs>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <Stack spacing={4}>
+              <FormControl isInvalid={!!errors.username}>
+                <FormLabel htmlFor='username'>Username</FormLabel>
+                <Input id='username' type='text' {...register('username')} />
+                <FormErrorMessage>
+                  {errors.username && errors.username.message}
+                </FormErrorMessage>
+              </FormControl>
+              <FormControl isInvalid={!!errors.password}>
+                <FormLabel htmlFor='password'>Password</FormLabel>
+                <InputGroup>
+                  <Input
+                    id='password'
+                    type={showPassword ? 'text' : 'password'}
+                    {...register('password')}
+                  />
+                  <InputRightElement>
+                    <Button
+                      aria-label={
+                        showPassword ? 'Hide password' : 'Show password'
+                      }
+                      variant={'ghost'}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setShowPassword((prev) => !prev);
+                      }}
+                      size='sm'
+                    >
+                      {showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                    </Button>
+                  </InputRightElement>
+                </InputGroup>
+                <FormErrorMessage>
+                  {errors.password && errors.password.message}
+                </FormErrorMessage>
+              </FormControl>
+              <Stack spacing={10}>
                 <Checkbox>Remember me</Checkbox>
-                <Link color={'blue.400'}>Forgot password?</Link>
+                <Button
+                  size='lg'
+                  bg={'blue.400'}
+                  color={'white'}
+                  _hover={{
+                    bg: 'blue.500',
+                  }}
+                  loadingText='Signing In'
+                  isLoading={isLoading}
+                  type='submit'
+                >
+                  Sign in
+                </Button>
               </Stack>
-              <Button
-                bg={'blue.400'}
-                color={'white'}
-                _hover={{
-                  bg: 'blue.500',
-                }}
-              >
-                Sign in
-              </Button>
+              {error && 
+                <Text color='red.500' textAlign='center'>
+                  {error.message}
+                </Text>
+            }
             </Stack>
-          </Stack>
+          </form>
         </Box>
       </Stack>
     </Flex>
   );
-}
+};
+
+export default SignIn;

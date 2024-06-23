@@ -1,4 +1,4 @@
-import CommunityList from '@/components/Community/CommunityList';
+import CommunityList from '@/components/community/CommunityList';
 import { fetchCommunities } from '@/hooks/useCommunity';
 import {
   HydrationBoundary,
