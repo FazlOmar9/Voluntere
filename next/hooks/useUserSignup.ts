@@ -11,8 +11,10 @@ const useUserSignup = (data: FormDataUS | null) => {
 
   useEffect(() => {
     if (!data) return;
-
+    setIsSubmitted(false);
+    setError(null);
     setIsLoading(true);
+
     apiClient
       .post('/user', data)
       .then((res) => {
@@ -22,7 +24,7 @@ const useUserSignup = (data: FormDataUS | null) => {
       .finally(() => setIsLoading(false));
   }, [data]);
 
-  return { isSubmitted, setIsSubmitted, isLoading, error };
+  return { isSubmitted, isLoading, error };
 };
 
 export default useUserSignup;

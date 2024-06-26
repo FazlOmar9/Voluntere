@@ -129,22 +129,6 @@ export default function NavBar() {
                 >
                   {session.user?.name}
                 </Button>
-                <Button
-                  as={'button'}
-                  display={'inline-flex' }
-                  fontSize={'sm'}
-                  fontWeight={600}
-                  color={'white'}
-                  bg={'blue.400'}
-                  onClick={() => {
-                    signOut();
-                  }}
-                  _hover={{
-                    bg: 'blue.300',
-                  }}
-                >
-                  <Icon as={MdLogout} />
-                </Button>
               </Stack>
             )
           ) : (
@@ -166,7 +150,7 @@ export default function NavBar() {
               </Button>
               <Button
                 as={'a'}
-                display={'inline-flex'}
+                display={{ base: 'none', md: 'inline-flex' }}
                 fontSize={'sm'}
                 fontWeight={600}
                 color={'white'}
@@ -279,6 +263,9 @@ const DesktopSubNav = ({ label, href, subLabel }: NavItem) => {
 };
 
 const MobileNav = () => {
+  const { data: session } = useSession();
+  const displayLogout = session?.user?.name ? 'block' : 'none';
+
   return (
     <Stack
       bg={useColorModeValue('white', 'gray.800')}
@@ -288,6 +275,26 @@ const MobileNav = () => {
       {NAV_ITEMS.map((navItem) => (
         <MobileNavItem key={navItem.label} {...navItem} />
       ))}
+
+      <Stack spacing={4} display={displayLogout}>
+        <Flex
+          py={2}
+          justify={'space-between'}
+          align={'center'}
+          _hover={{
+            textDecoration: 'none',
+          }}
+        >
+          <Text
+            as={'button'}
+            onClick={() => signOut()}
+            fontWeight={600}
+            color={'red.500'}
+          >
+            Log Out
+          </Text>
+        </Flex>
+      </Stack>
     </Stack>
   );
 };
@@ -314,7 +321,7 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
           {label}
         </Text>
         {children && (
-          <Button onClick={children && onToggle}>
+          <Button variant={'ghost'} onClick={children && onToggle}>
             <Icon
               as={ChevronDownIcon}
               transition={'all .25s ease-in-out'}

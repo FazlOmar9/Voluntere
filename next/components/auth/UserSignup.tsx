@@ -14,6 +14,7 @@ import {
   InputRightElement,
   Text,
   VStack,
+  useToast,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
@@ -72,34 +73,34 @@ const UserSignup = () => {
     setData(data);
   };
 
-  const { isSubmitted, setIsSubmitted, isLoading, error } = useUserSignup(data);
+  const { isSubmitted, isLoading, error } = useUserSignup(data);
 
+  const toast = useToast();
   const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     if (!isSubmitted) return;
-    setIsModalOpen(true);
-    setModalMessage('Signed up successfully!');
-    setModalLink('/');
-    setTimeout(() => {
-      setIsModalOpen(false);
-      setModalMessage('');
-      setIsSubmitted(false);
-      reset();
-    }, 2000);
+    toast({
+      title: 'Signed up successfully!',
+      description: 'Your account has been created.',
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
+    });
+    reset();
   }, [isSubmitted]);
 
   useEffect(() => {
     if (!error) return;
-    setIsModalOpen(true);
-    setModalMessage('There was an error. Try again later');
-    setModalLink('/signup/volunteer');
-    setTimeout(() => {
-      setIsModalOpen(false);
-      setModalMessage('');
-    }, 2000);
+    toast({
+      title: 'An error occurred.',
+      description: 'Please try again later.',
+      status: 'error',
+      duration: 5000,
+      isClosable: true,
+    });
   }, [error]);
-
+  
   return (
     <Flex
       direction='column'

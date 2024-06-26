@@ -15,8 +15,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/navigation';
 
 export default function Hero() {
-  const router = useRouter();
-
   const indiaMsg = `India's Largest`;
   const startNowMsg = `Start Now- It's free!`;
   return (
@@ -27,7 +25,6 @@ export default function Hero() {
           rel='stylesheet'
         />
       </Head>
-
       <Container maxW={'3xl'}>
         <Stack
           as={Box}
@@ -72,7 +69,9 @@ export default function Hero() {
             <Button variant={'link'} colorScheme={'blue'} size={'sm'}>
               Learn more
             </Button>
-            <Box>
+            <Box 
+            display={{base: 'none', md: 'flex'}}
+            >
               <Icon
                 as={Arrow}
                 color={useColorModeValue('gray.800', 'gray.300')}

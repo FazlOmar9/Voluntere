@@ -36,8 +36,7 @@ const EventPage = ({ id }: { id: string }) => {
                 />
                 <Stack>
                   <Heading size='xl' pt='10px'>
-                    {/* {event?.name} */}
-                    BIG ASS EVENT NAME CAUSE WHY THE HELL NOT
+                    {event?.name}
                   </Heading>
                   <Heading size='sm' fontWeight='normal'>
                     Registered Volunteers
@@ -58,13 +57,11 @@ const EventPage = ({ id }: { id: string }) => {
             maxW='500px'
             bgColor='rgba(0, 0, 0, 0.05)'
           >
-            <CardBody >
+            <CardBody pr="100px">
                   <Heading size='sm' fontWeight='normal'>
                     Venue:{' '}
                     <Text fontWeight='bold' pb='10px'>
-                      {/* {event?.venue} */}
-                      BIG ASS EVENT VENUE CAUSE ADDRESSES ARE BIG AND MOST PEOPLE
-                      DONT KNOW WHERE YOUR MAMA HOUSE AT
+                      {event?.venue}
                     </Text>
                   </Heading>
                   <Heading size='sm' fontWeight='normal'>
@@ -87,9 +84,7 @@ const EventPage = ({ id }: { id: string }) => {
                       })}
                     </Text>
                   </Heading>
-                {/* </Stack> */}
                 <EventBadge status={event?.status || 'Live'} />
-              {/* </VStack> */}
             </CardBody>
           </Card>
         </Stack>
