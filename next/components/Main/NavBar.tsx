@@ -1,31 +1,37 @@
 'use client';
 
 import {
-  Box,
-  Flex,
-  Text,
-  IconButton,
-  Button,
-  Stack,
-  Collapse,
-  Icon,
-  Link,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  useColorModeValue,
-  useBreakpointValue,
-  useDisclosure,
-} from '@chakra-ui/react';
-import {
-  HamburgerIcon,
-  CloseIcon,
   ChevronDownIcon,
   ChevronRightIcon,
+  CloseIcon,
+  HamburgerIcon,
 } from '@chakra-ui/icons';
+import {
+  Box,
+  Button,
+  Collapse,
+  Flex,
+  HStack,
+  Icon,
+  IconButton,
+  Link,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  Spinner,
+  Stack,
+  Text,
+  useBreakpointValue,
+  useColorModeValue,
+  useDisclosure,
+} from '@chakra-ui/react';
+import { signOut, useSession } from 'next-auth/react';
+import { MdLogout } from 'react-icons/md';
 
 export default function NavBar() {
   const { isOpen, onToggle } = useDisclosure();
+
+  const { data: session, status } = useSession();
 
   return (
     <Box bg='#04874a'>
@@ -70,37 +76,120 @@ export default function NavBar() {
           </Flex>
         </Flex>
 
-        <Stack
-          flex={{ base: 1, md: 0 }}
-          justify={'flex-end'}
-          direction={'row'}
-          spacing={6}
-        >
-          <Button
-            as={'a'}
-            color={'white'}
-            fontSize={'sm'}
-            fontWeight={600}
-            variant={'link'}
-            href={'/signin'}
+        {status != 'loading' ? (
+          session ? (
+            session.user?.email === '1' ? (
+              <Stack
+                flex={{ base: 1, md: 0 }}
+                justify={'flex-end'}
+                direction={'row'}
+                spacing={6}
+              >
+                <Button
+                  as={'a'}
+                  color={'white'}
+                  fontSize={'sm'}
+                  fontWeight={600}
+                  variant={'link'}
+                  href={'/signin'}
+                >
+                  {session.user?.name}
+                </Button>
+                <Button
+                  as={'button'}
+                  display={'inline-flex'}
+                  fontSize={'sm'}
+                  fontWeight={600}
+                  color={'white'}
+                  bg={'blue.400'}
+                  onClick={() => {
+                    signOut();
+                  }}
+                  _hover={{
+                    bg: 'blue.300',
+                  }}
+                >
+                  <Icon as={MdLogout} />
+                </Button>
+              </Stack>
+            ) : (
+              <Stack
+                flex={{ base: 1, md: 0 }}
+                justify={'flex-end'}
+                direction={'row'}
+                spacing={6}
+              >
+                <Button
+                  as={'a'}
+                  color={'white'}
+                  fontSize={'sm'}
+                  fontWeight={600}
+                  variant={'link'}
+                  href={'/signin'}
+                >
+                  {session.user?.name}
+                </Button>
+                <Button
+                  as={'button'}
+                  display={'inline-flex' }
+                  fontSize={'sm'}
+                  fontWeight={600}
+                  color={'white'}
+                  bg={'blue.400'}
+                  onClick={() => {
+                    signOut();
+                  }}
+                  _hover={{
+                    bg: 'blue.300',
+                  }}
+                >
+                  <Icon as={MdLogout} />
+                </Button>
+              </Stack>
+            )
+          ) : (
+            <Stack
+              flex={{ base: 1, md: 0 }}
+              justify={'flex-end'}
+              direction={'row'}
+              spacing={6}
+            >
+              <Button
+                as={'a'}
+                color={'white'}
+                fontSize={'sm'}
+                fontWeight={600}
+                variant={'link'}
+                href={'/signin'}
+              >
+                Sign In
+              </Button>
+              <Button
+                as={'a'}
+                display={'inline-flex'}
+                fontSize={'sm'}
+                fontWeight={600}
+                color={'white'}
+                bg={'blue.400'}
+                href={'/signup'}
+                _hover={{
+                  bg: 'blue.300',
+                }}
+              >
+                Join Now
+              </Button>
+            </Stack>
+          )
+        ) : (
+          <Stack
+            flex={{ base: 1, md: 0 }}
+            justify={'flex-end'}
+            direction={'row'}
+            spacing={6}
           >
-            Sign In
-          </Button>
-          <Button
-            as={'a'}
-            display={{ base: 'none', md: 'inline-flex' }}
-            fontSize={'sm'}
-            fontWeight={600}
-            color={'white'}
-            bg={'blue.400'}
-            href={'/signup'}
-            _hover={{
-              bg: 'blue.300',
-            }}
-          >
-            Join Now
-          </Button>
-        </Stack>
+            <Spinner color='white' />
+          </Stack>
+        )}
       </Flex>
 
       <Collapse in={isOpen} animateOpacity>
@@ -207,11 +296,9 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
-    <Stack spacing={4} onClick={children && onToggle}>
+    <Stack spacing={4}>
       <Flex
         py={2}
-        as={Link}
-        href={href ?? '#'}
         justify={'space-between'}
         align={'center'}
         _hover={{
@@ -219,19 +306,23 @@ const MobileNavItem = ({ label, children, href }: NavItem) => {
         }}
       >
         <Text
+          as={Link}
+          href={href ?? '#'}
           fontWeight={600}
           color={useColorModeValue('gray.600', 'gray.200')}
         >
           {label}
         </Text>
         {children && (
-          <Icon
-            as={ChevronDownIcon}
-            transition={'all .25s ease-in-out'}
-            transform={isOpen ? 'rotate(180deg)' : ''}
-            w={6}
-            h={6}
-          />
+          <Button onClick={children && onToggle}>
+            <Icon
+              as={ChevronDownIcon}
+              transition={'all .25s ease-in-out'}
+              transform={isOpen ? 'rotate(180deg)' : ''}
+              w={6}
+              h={6}
+            />
+          </Button>
         )}
       </Flex>
 

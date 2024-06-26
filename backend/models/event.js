@@ -22,6 +22,10 @@ const eventSchema = new mongoose.Schema({
     ref: 'Community',
     required: true,
   },
+  requirement: {
+    type: Number,
+    required: true,
+  },
   volunteers: {
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'User',

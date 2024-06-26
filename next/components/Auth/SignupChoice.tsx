@@ -1,13 +1,12 @@
 'use client';
+
 import {
   Box,
-  Flex,
   Heading,
   Icon,
   LinkBox,
   LinkOverlay,
-  VStack,
-  useColorModeValue,
+  VStack
 } from '@chakra-ui/react';
 import { FaUser, FaUsers } from 'react-icons/fa';
 

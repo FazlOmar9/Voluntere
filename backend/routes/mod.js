@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 // get mod by id
 router.get('/:id', async (req, res) => {
   try {
-    const mod = await Mod.findById(req.params.id);
+    const mod = await Mod.findOne({username: req.params.username});
     res.send(mod);
   } catch (error) {
     res.status(500).send({ message: error.message });
@@ -57,18 +57,14 @@ router.post('/auth', async (req, res) => {
   }
 });
 
-// update mod by id
-router.put('/:id', async (req, res) => {
+// update mod by username
+router.put('/', async (req, res) => {
   try {
     const { username, oldPassword, newPassword } = req.body;
     const updatedFields = {};
-
-    if (username) {
-      updatedFields.username = username;
-    }
-
+    
     if (oldPassword && newPassword) {
-      const mod = await Mod.findById(req.params.id);
+      const mod = await Mod.findOne({ username });
       const isPasswordMatch = await bcrypt.compare(oldPassword, mod.password);
       if (isPasswordMatch) {
         updatedFields.password = await bcrypt.hash(newPassword, saltRounds);
@@ -77,8 +73,8 @@ router.put('/:id', async (req, res) => {
       }
     }
 
-    const updatedMod = await Mod.findByIdAndUpdate(
-      req.params.id,
+    const updatedMod = await Mod.findOneAndUpdate(
+      { username },
       updatedFields,
       { new: true }
     );

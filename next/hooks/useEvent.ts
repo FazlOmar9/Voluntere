@@ -5,8 +5,9 @@ export interface Event {
   _id: string;
   name: string;
   description: string;
-  date: Date;
+  date: string;
   venue: string;
+  requirement: number;
   community: string;
   volunteers: string[];
   status: 'Upcoming' | 'Live' | 'Closed' | 'Cancelled' | 'Ended';

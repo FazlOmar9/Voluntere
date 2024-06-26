@@ -12,8 +12,11 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 import Head from 'next/head';
+import { useRouter } from 'next/navigation';
 
 export default function Hero() {
+  const router = useRouter();
+
   const indiaMsg = `India's Largest`;
   const startNowMsg = `Start Now- It's free!`;
   return (

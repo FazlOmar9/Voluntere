@@ -1,6 +1,5 @@
 'use client';
 
-import useLogin from '@/hooks/useLogin';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {
   Box,
@@ -19,11 +18,13 @@ import {
   TabList,
   Tabs,
   Text,
-  useColorModeValue
+  useColorModeValue,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { SubmitHandler, set, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 const schema = z.object({
@@ -39,7 +40,10 @@ export type FormDataSI = z.infer<typeof schema>;
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isModerator, setIsModerator] = useState(false);
-  const [data, setData] = useState<FormDataSI | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
@@ -48,11 +52,24 @@ const SignIn = () => {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<FormDataSI> = (data) => {
-    setData(data);
-  };
+  const onSubmit: SubmitHandler<FormDataSI> = async (data) => {
+    setIsLoading(true);
+    const result = await signIn('credentials', {
+      redirect: false,
+      ...data,
+      mod: isModerator ? '1' : '0',
+    }).then((res) => {
+      setIsLoading(false);
+      console.log(res);
+      return res;
+    });
 
-  const { error, isLoading } = useLogin(data, isModerator);
+    if (result?.error) {
+      setError(result.error);
+    } else {
+      router.push('/');
+    }
+  };
 
   return (
     <Flex
@@ -136,11 +153,11 @@ const SignIn = () => {
                   Sign in
                 </Button>
               </Stack>
-              {error && 
+              {error && (
                 <Text color='red.500' textAlign='center'>
-                  {error.message}
+                  {error}
                 </Text>
-            }
+              )}
             </Stack>
           </form>
         </Box>

@@ -15,7 +15,7 @@ interface Props {
 }
 
 const EventCard = ({ children: event }: Props) => {
-  const redirect = `/event/${event._id}`;
+  const redirect = `/events/${event._id}`;
 
   return (
     <Card

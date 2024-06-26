@@ -16,9 +16,9 @@ router.get('/', async (req, res) => {
 });
 
 // get user by id
-router.get('/:id', async (req, res) => {
+router.get('/:username', async (req, res) => {
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findOne({ username: req.params.username });
     res.send(user);
   } catch (error) {
     res.status(500).send({ message: error.message });
@@ -59,16 +59,20 @@ router.post('/', async (req, res) => {
 // update user by id
 router.put('/:id', async (req, res) => {
   try {
-    const { username, oldPassword, newPassword, events, communities } =
+    const { username, oldPassword, newPassword, event, community } =
       req.body;
     const updatedFields = {};
+    const user = await User.findOne({ username });
 
-    if (username) {
-      updatedFields.username = username;
+    if (event) {
+      updatedFields.events = [...user.events, event];
+    }
+
+    if (community) {
+      updatedFields.communities = [...user.communities, community];
     }
 
     if (oldPassword && newPassword) {
-      const user = await User.findById(req.params.id);
       const isPasswordMatch = await bcrypt.compare(oldPassword, user.password);
       if (isPasswordMatch) {
         updatedFields.password = await bcrypt.hash(newPassword, saltRounds);
@@ -77,20 +81,58 @@ router.put('/:id', async (req, res) => {
       }
     }
 
-    if (events) {
-      updatedFields.events = events;
-    }
-
-    if (communities) {
-      updatedFields.communities = communities;
-    }
-
-    const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
+    const updatedUser = await User.findOneAndUpdate(
+      { username },
       updatedFields,
       { new: true }
     );
     res.send(updatedUser);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
+// remove an event by id
+router.put('/rmevent', async (req, res) => {
+  try {
+    const { username, eventId } = req.body;
+    const user = await User.findOne({ username });
+    if (user) {
+      const updatedEvents = user.events.filter(
+        (event) => event.toString() !== eventId
+      );
+      const updatedUser = await User.findOneAndUpdate(
+        { username },
+        { events: updatedEvents },
+        { new: true }
+      );
+      res.send(updatedUser);
+    } else {
+      res.status(400).send({ message: 'User not found' });
+    }
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
+// remove a community by id
+router.put('/rmcommunity', async (req, res) => {
+  try {
+    const { username, communityId } = req.body;
+    const user = await User.findOne({ username });
+    if (user) {
+      const updatedCommunities = user.communities.filter(
+        (community) => community.toString() !== communityId
+      );
+      const updatedUser = await User.findOneAndUpdate(
+        { username },
+        { communities: updatedCommunities },
+        { new: true }
+      );
+      res.send(updatedUser);
+    } else {
+      res.status(400).send({ message: 'User not found' });
+    }
   } catch (error) {
     res.status(500).send({ message: error.message });
   }

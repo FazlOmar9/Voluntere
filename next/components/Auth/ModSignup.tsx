@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -21,6 +21,7 @@ import {
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import useModSignup from '@/hooks/useModSignup';
+import { useRouter } from 'next/navigation';
 
 const schema = z.object({
   modEmail: z.string().email(),

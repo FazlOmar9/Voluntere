@@ -93,7 +93,7 @@ export default function AboutTeam() {
   const testimonialMessage = `Hey, I'm Fazl. I'm a fullstack developer and the founder of Voluntere. Super skilled dude with a passion for helping others.`
 
   return (
-    <Box bg={useColorModeValue('gray.100', 'gray.700')}>
+    <Box bg={useColorModeValue('gray.100', 'gray.700')} minH='100vh'>
       <Container maxW={'7xl'} py={16} as={Stack} spacing={12}>
         <Stack spacing={0} align={'center'}>
           <Heading>Meet Our Team</Heading>

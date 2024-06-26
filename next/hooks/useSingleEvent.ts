@@ -4,7 +4,9 @@ import { Event } from './useEvent';
 
 const useSingleEvent = (id: string) => {
   const fetchSingleEvent = () => {
-    return apiClient.get<Event>(`/event/${id}`).then((res) => res.data);
+    return apiClient.get<Event>(`/event/${id}`).then((res) => {
+      return res.data;
+    });
   };
 
   return useQuery({
