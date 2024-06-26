@@ -12,6 +12,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Spinner,
   Text,
   VStack,
   useToast,
@@ -21,6 +22,8 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import MessageModal from './MessageModal';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const schema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
@@ -100,7 +103,21 @@ const UserSignup = () => {
       isClosable: true,
     });
   }, [error]);
+
+  const { status } = useSession();
+  const router = useRouter();
   
+  if (status === 'loading') {
+    return (
+      <Flex minH={'100vh'} align={'center'} justify={'center'}>
+        <Spinner color='black' />
+      </Flex>
+    );
+  } else if (status === 'authenticated') {
+    router.push('/');
+    return null;
+  }
+
   return (
     <Flex
       direction='column'

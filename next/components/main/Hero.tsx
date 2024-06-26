@@ -66,7 +66,7 @@ export default function Hero() {
             >
               Get Started
             </Button>
-            <Button variant={'link'} colorScheme={'blue'} size={'sm'}>
+            <Button as={'a'} variant={'link'} colorScheme={'blue'} size={'sm'} href='/about/team'>
               Learn more
             </Button>
             <Box 

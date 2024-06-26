@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -18,10 +18,12 @@ import {
   InputGroup,
   InputRightElement,
   Heading,
+  Spinner,
 } from '@chakra-ui/react';
 import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import useModSignup from '@/hooks/useModSignup';
 import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 const schema = z.object({
   modEmail: z.string().email(),
@@ -91,6 +93,20 @@ const CommunitySignup = () => {
       isClosable: true,
     });
   }, [error]);
+
+  const { status } = useSession();
+  const router = useRouter();
+  
+  if (status === 'loading') {
+    return (
+      <Flex minH={'100vh'} align={'center'} justify={'center'}>
+        <Spinner color='black' />
+      </Flex>
+    );
+  } else if (status === 'authenticated') {
+    router.push('/');
+    return null;
+  }
 
   return (
     <Flex direction='column' align='center' justify='center' bg='gray.50'>

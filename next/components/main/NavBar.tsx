@@ -97,16 +97,16 @@ export default function NavBar() {
                 </Button>
                 <Button
                   as={'button'}
-                  display={'inline-flex'}
+                  display={{ base: 'none', md: 'inline-flex' }}
                   fontSize={'sm'}
                   fontWeight={600}
                   color={'white'}
-                  bg={'blue.400'}
+                  bg={'rgba(0, 0, 0, 0.3)'}
                   onClick={() => {
                     signOut();
                   }}
                   _hover={{
-                    bg: 'blue.300',
+                    bg: 'rgba(0, 0, 0, 0.5)',
                   }}
                 >
                   <Icon as={MdLogout} />
@@ -128,6 +128,22 @@ export default function NavBar() {
                   href={'/signin'}
                 >
                   {session.user?.name}
+                </Button>
+                <Button
+                  as={'button'}
+                  display={{ base: 'none', md: 'inline-flex' }}
+                  fontSize={'sm'}
+                  fontWeight={600}
+                  color={'white'}
+                  bg={'rgba(0, 0, 0, 0.3)'}
+                  onClick={() => {
+                    signOut();
+                  }}
+                  _hover={{
+                    bg: 'rgba(0, 0, 0, 0.5)',
+                  }}
+                >
+                  <Icon as={MdLogout} />
                 </Button>
               </Stack>
             )

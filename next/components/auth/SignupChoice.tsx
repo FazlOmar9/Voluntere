@@ -2,17 +2,35 @@
 
 import {
   Box,
+  Flex,
   Heading,
   Icon,
   LinkBox,
   LinkOverlay,
+  Spinner,
   VStack
 } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { FaUser, FaUsers } from 'react-icons/fa';
 
 const Choice = () => {
   const vmsg = `I'm a volunteer`;
   const cmsg = `I'm a community`;
+
+  const { status } = useSession();
+  const router = useRouter();
+  
+  if (status === 'loading') {
+    return (
+      <Flex minH={'100vh'} align={'center'} justify={'center'}>
+        <Spinner color='black' />
+      </Flex>
+    );
+  } else if (status === 'authenticated') {
+    router.push('/');
+    return null;
+  }
 
   return (
       <Box

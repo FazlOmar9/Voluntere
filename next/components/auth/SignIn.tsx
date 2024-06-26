@@ -13,6 +13,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Spinner,
   Stack,
   Tab,
   TabList,
@@ -22,7 +23,7 @@ import {
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
-import { signIn } from 'next-auth/react';
+import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { SubmitHandler, set, useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -38,11 +39,13 @@ const schema = z.object({
 export type FormDataSI = z.infer<typeof schema>;
 
 const SignIn = () => {
+  const router = useRouter();
+  const { status } = useSession();
+
   const [showPassword, setShowPassword] = useState(false);
   const [isModerator, setIsModerator] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
 
   const {
     register,
@@ -67,22 +70,33 @@ const SignIn = () => {
     if (result?.error) {
       setError(result.error);
     } else {
-      router.push('/');
+      router.back();
     }
   };
+
+  if (status === 'loading') {
+    return (
+      <Flex minH={'100vh'} align={'center'} justify={'center'}>
+        <Spinner color='black'/>
+      </Flex>
+    );
+  } else if (status === 'authenticated') {
+    router.push('/');
+    return null;
+  }
 
   return (
     <Flex
       minH={'100vh'}
       align={'center'}
       justify={'center'}
-      bg={useColorModeValue('gray.50', 'gray.800')}
+      bg={'gray.50'}
     >
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
         <Heading fontSize={'4xl'}>Sign in to your account</Heading>
         <Box
           rounded={'lg'}
-          bg={useColorModeValue('white', 'gray.700')}
+          bg={'white'}
           boxShadow={'lg'}
           p={8}
         >
