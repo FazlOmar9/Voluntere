@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
     res.send(communities);
   } catch (error) {
     res.status(500).send({ message: error.message });
-    console.log(error.message)
+    console.log(error.message);
   }
 });
 
@@ -41,19 +41,45 @@ router.post('/', async (req, res) => {
 // update community by id
 router.put('/:id', async (req, res) => {
   try {
-    const { name, description, events, members } = req.body;
+    const { name, description, event, member } = req.body;
     const updatedFields = {};
 
     if (name) updatedFields.name = name;
     if (description) updatedFields.description = description;
-    if (events) updatedFields.events = events;
-    if (members) updatedFields.members = members;
+    if (event) {
+      const events = await Community.findById(req.params.id).events;
+      updatedFields.events = [...events, event];
+    }
+    if (member) {
+      const com = await Community.findById(req.params.id);
+      updatedFields.members = [...com.members, member];
+    }
 
     const updatedCommunity = await Community.findByIdAndUpdate(
       req.params.id,
       updatedFields,
       { new: true }
     );
+
+    res.send(updatedCommunity);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
+router.put('/rmuser/:id', async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const community = await Community.findById(req.params.id);
+    const members = community.members;
+
+    const updatedMembers = members.filter((member) => member.toString() !== userId);
+    const updatedCommunity = await Community.findByIdAndUpdate(
+      req.params.id,
+      { members: updatedMembers },
+      { new: true }
+    );
+
     res.send(updatedCommunity);
   } catch (error) {
     res.status(500).send({ message: error.message });

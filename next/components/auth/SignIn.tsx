@@ -19,13 +19,12 @@ import {
   TabList,
   Tabs,
   Text,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
 import { signIn, useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { SubmitHandler, set, useForm } from 'react-hook-form';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 const schema = z.object({
@@ -63,43 +62,32 @@ const SignIn = () => {
       mod: isModerator ? '1' : '0',
     }).then((res) => {
       setIsLoading(false);
-      console.log(res);
       return res;
-    });
+    })
 
     if (result?.error) {
       setError(result.error);
-    } else {
-      router.back();
     }
+
+    if (result?.ok) router.back();
   };
 
   if (status === 'loading') {
     return (
       <Flex minH={'100vh'} align={'center'} justify={'center'}>
-        <Spinner color='black'/>
+        <Spinner color='black' />
       </Flex>
     );
   } else if (status === 'authenticated') {
-    router.push('/');
+    // router.push('/');
     return null;
   }
 
   return (
-    <Flex
-      minH={'100vh'}
-      align={'center'}
-      justify={'center'}
-      bg={'gray.50'}
-    >
+    <Flex minH={'100vh'} align={'center'} justify={'center'} bg={'gray.50'}>
       <Stack spacing={8} mx={'auto'} maxW={'lg'} py={12} px={6}>
         <Heading fontSize={'4xl'}>Sign in to your account</Heading>
-        <Box
-          rounded={'lg'}
-          bg={'white'}
-          boxShadow={'lg'}
-          p={8}
-        >
+        <Box rounded={'lg'} bg={'white'} boxShadow={'lg'} p={8}>
           <Tabs
             isFitted
             variant='enclosed'

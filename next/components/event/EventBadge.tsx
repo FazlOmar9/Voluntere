@@ -2,9 +2,10 @@ import { Badge } from '@chakra-ui/react';
 
 interface EventBadgeProps {
   status: 'Upcoming' | 'Live' | 'Closed' | 'Cancelled' | 'Ended';
+  width ?: string;
 }
 
-const EventBadge = ({ status }: EventBadgeProps) => {
+const EventBadge = ({ status, width }: EventBadgeProps) => {
   let colorScheme: string;
 
   switch (status) {
@@ -27,7 +28,7 @@ const EventBadge = ({ status }: EventBadgeProps) => {
       colorScheme = 'red';
   }
 
-  return <Badge colorScheme={colorScheme}>{status}</Badge>;
+  return <Badge colorScheme={colorScheme} width={width}>{status}</Badge>;
 };
 
 export default EventBadge;

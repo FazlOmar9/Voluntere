@@ -57,7 +57,7 @@ router.post('/', async (req, res) => {
 });
 
 // update user by id
-router.put('/:id', async (req, res) => {
+router.put('/', async (req, res) => {
   try {
     const { username, oldPassword, newPassword, event, community } =
       req.body;

@@ -1,27 +1,77 @@
 'use client';
 
 import useSingleCommunity from '@/hooks/useSingleCommunity';
-
 import useEventList from '@/hooks/useEventList';
+import { addMember, removeMember } from '@/hooks/useCommunityMembership';
 import {
   Box,
+  Button,
   Card,
   CardBody,
   CardHeader,
+  Flex,
   Heading,
   Image,
   SimpleGrid,
+  Spinner,
   Stack,
   Text,
 } from '@chakra-ui/react';
+import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import EventCard from '../event/EventCard';
+import { useEffect, useState } from 'react';
 
 const CommunityPage = ({ id }: { id: string }) => {
+  const { data: session, status } = useSession();
   const { data: community, error, isLoading } = useSingleCommunity(id);
-  const { data: events } = useEventList(id || 'xxx');
+  const { data: events } = useEventList(id);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>{error.message}</div>;
+  const [isMember, setIsMember] = useState(false);
+  useEffect(() => {
+    if (community) {
+      setIsMember(
+        community?.members.includes(session?.user?.image || '') || false
+      );
+    }
+  }, [community, session]);
+
+  if (isLoading) {
+    return (
+      <Flex justifyContent='center' alignItems='center' minH='100vh'>
+        <Spinner color='black' />
+      </Flex>
+    );
+  }
+  if (error)
+    return (
+      <Flex
+        minH={'100vh'}
+        justifyContent='center'
+        alignItems='center'
+        bg='black'
+        color='white'
+      >
+        Page Not Found
+      </Flex>
+    );
+
+  if (!community) return <Flex minH={'100vh'}>Community not found</Flex>;
+
+  const handleClick = () => {
+    isMember
+      ? removeMember(
+          community?._id || '',
+          session?.user?.name || '',
+          session?.user?.image || ''
+        )
+      : addMember(
+          community?._id || '',
+          session?.user?.name || '',
+          session?.user?.image || ''
+        );
+    setIsMember((r) => !r);
+  };
 
   return (
     <Box p='20px 10px 10px 20px' minH='100vh'>
@@ -43,19 +93,46 @@ const CommunityPage = ({ id }: { id: string }) => {
               alt='community image'
               height='200px'
             />
-            <Stack>
-              <Heading size='xl' pt='10px'>
-                {community?.name}
-              </Heading>
-              <Heading size='sm' fontWeight='normal'>
-                Moderated by <Text fontWeight='bold'>{community?.mod}</Text>
-              </Heading>
-              <Heading size='sm' fontWeight='normal'>
-                Members{' '}
-                <Text fontWeight='bold' as='span'>
-                  {community?.members.length}
-                </Text>
-              </Heading>
+            <Stack spacing={'50px'}>
+              <Stack>
+                <Heading size='xl' pt='10px'>
+                  {community?.name}
+                </Heading>
+                <Heading size='sm' fontWeight='normal'>
+                  Moderated by <Text fontWeight='bold'>{community?.mod}</Text>
+                </Heading>
+                <Heading size='sm' fontWeight='normal'>
+                  Members{' '}
+                  <Text fontWeight='bold' as='span'>
+                    {community?.members.length}
+                  </Text>
+                </Heading>
+              </Stack>
+
+              <Stack alignItems={'center'}>
+                {status === 'authenticated' ? (
+                  <Button
+                    width={'100%'}
+                    maxW={'220px'}
+                    isActive={session?.user?.email === '0'}
+                    colorScheme={isMember ? 'red' : 'green'}
+                    onClick={handleClick}
+                  >
+                    {isMember ? 'Leave' : 'Join'}
+                  </Button>
+                ) : (
+                  <Button
+                    width={'100%'}
+                    maxW={'220px'}
+                    colorScheme='green'
+                    isLoading={status === 'loading'}
+                    as={Link}
+                    href={'/signin'}
+                  >
+                    Sign in to Join
+                  </Button>
+                )}
+              </Stack>
             </Stack>
           </Stack>
         </CardHeader>

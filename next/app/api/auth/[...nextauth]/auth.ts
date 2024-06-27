@@ -13,7 +13,7 @@ interface User extends NextAuthUser {
   image: string;
 }
 
-interface UserData {
+export interface UserData {
   _id: string;
   name: string;
   username: string;
@@ -55,7 +55,7 @@ const options = {
                 return {
                   name: res.data.username,
                   email: res.data.email,
-                  image: res.data.profileImage,
+                  image: res.data._id,
                 } as User;
               } else {
                 return null;
@@ -74,7 +74,7 @@ const options = {
                 return {
                   name: res.data.username,
                   email: credentials.mod,
-                  image: res.data.profileImage,
+                  image: res.data._id,
                 } as User;
               } else {
                 return null;
