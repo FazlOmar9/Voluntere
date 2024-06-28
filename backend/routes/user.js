@@ -59,17 +59,18 @@ router.post('/', async (req, res) => {
 // update user by id
 router.put('/', async (req, res) => {
   try {
-    const { username, oldPassword, newPassword, event, community } =
-      req.body;
+    const { username, oldPassword, newPassword, event, community } = req.body;
     const updatedFields = {};
     const user = await User.findOne({ username });
 
     if (event) {
-      updatedFields.events = [...user.events, event];
+      if (!user.events.includes(event))
+        updatedFields.events = [...user.events, event];
     }
 
     if (community) {
-      updatedFields.communities = [...user.communities, community];
+      if (!user.communities.includes(community))
+        updatedFields.communities = [...user.communities, community];
     }
 
     if (oldPassword && newPassword) {

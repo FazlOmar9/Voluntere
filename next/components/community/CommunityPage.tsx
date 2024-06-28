@@ -28,6 +28,8 @@ const CommunityPage = ({ id }: { id: string }) => {
   const { data: events } = useEventList(id);
 
   const [isMember, setIsMember] = useState(false);
+  const [isBtnLoading, setIsBtnLoading] = useState(false);
+
   useEffect(() => {
     if (community) {
       setIsMember(
@@ -59,18 +61,24 @@ const CommunityPage = ({ id }: { id: string }) => {
   if (!community) return <Flex minH={'100vh'}>Community not found</Flex>;
 
   const handleClick = () => {
+    const successCallback = () => {
+      setIsMember((r) => !r);
+      setIsBtnLoading(false);
+    }
+    setIsBtnLoading(true);
     isMember
       ? removeMember(
           community?._id || '',
           session?.user?.name || '',
-          session?.user?.image || ''
+          session?.user?.image || '',
+          successCallback
         )
       : addMember(
           community?._id || '',
           session?.user?.name || '',
-          session?.user?.image || ''
+          session?.user?.image || '',
+          successCallback
         );
-    setIsMember((r) => !r);
   };
 
   return (
@@ -114,7 +122,8 @@ const CommunityPage = ({ id }: { id: string }) => {
                   <Button
                     width={'100%'}
                     maxW={'220px'}
-                    isActive={session?.user?.email === '0'}
+                    isDisabled={session?.user?.email === '1'}
+                    isLoading={isBtnLoading}
                     colorScheme={isMember ? 'red' : 'green'}
                     onClick={handleClick}
                   >

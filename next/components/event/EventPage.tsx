@@ -3,25 +3,73 @@
 import useSingleEvent from '@/hooks/useSingleEvent';
 import {
   Box,
+  Button,
   Card,
   CardBody,
   CardHeader,
+  Flex,
   Heading,
   Image,
+  Spinner,
   Stack,
-  Text
+  Text,
 } from '@chakra-ui/react';
 import EventBadge from './EventBadge';
+import { useSession } from 'next-auth/react';
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { addMember, removeMember } from '@/hooks/useEventMembership';
 
 const EventPage = ({ id }: { id: string }) => {
-  const { data: event } = useSingleEvent(id);
+  const { data: event, isLoading } = useSingleEvent(id);
+  const { data: session, status } = useSession();
+
+  const [isMember, setIsMember] = useState<boolean>(false);
+  const [isBtnLoading, setIsBtnLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (event) {
+      setIsMember(
+        event?.volunteers.includes(session?.user?.image || '') || false
+      );
+    }
+  }, [event, session]);
   const date = new Date(event?.date || '');
+
+  if (isLoading)
+    return (
+      <Flex justifyContent='center' alignItems='center' minH='100vh'>
+        <Spinner color='black' />
+      </Flex>
+    );
+
+  const handleClick = () => {
+    const successCallback = () => {
+      setIsMember(!isMember);
+      setIsBtnLoading(false);
+    };
+
+    setIsBtnLoading(true);
+    isMember
+      ? removeMember(
+          event?._id || '',
+          session?.user?.name || '',
+          session?.user?.image || '',
+          successCallback
+        )
+      : addMember(
+          event?._id || '',
+          session?.user?.name || '',
+          session?.user?.image || '',
+          successCallback
+        );
+  };
 
   return (
     <>
-      <Box p='20px 10px 10px 20px' minH='100vh'>
-      <Stack direction={{base: 'column', md: 'column', lg: 'row'}}alignItems='stretch'>
-      <Card p='10px 10px 10px 10px' maxW='900px' bgColor='rgba(0, 0, 0, 0.05)'>
+      <Box p='20px 10px 10px 10px' minH='100vh'>
+        <Stack direction={{ base: 'column', md: 'column', lg: 'row' }}>
+          <Card maxW='900px' bgColor='rgba(0, 0, 0, 0.05)'>
             <CardHeader borderBottom='1px'>
               <Stack
                 justifyContent='space-between'
@@ -48,25 +96,26 @@ const EventPage = ({ id }: { id: string }) => {
               </Stack>
             </CardHeader>
             <CardBody>
-              <Heading size='md'>About</Heading>
+              <Heading size='md' pb='10px'>
+                About
+              </Heading>
               <Text>{event?.description}</Text>
             </CardBody>
           </Card>
           <Card
-            p='10px 10px 10px 10px'
+            w={{ base: '100%', md: '100%', lg: '500px' }}
             maxW='500px'
             bgColor='rgba(0, 0, 0, 0.05)'
           >
-            <CardBody pr="100px">
+            <CardBody>
+              <Stack spacing={'100px'} direction={'column'}>
+                <Stack spacing={3} direction={'column'}>
                   <Heading size='sm' fontWeight='normal'>
-                    Venue:{' '}
-                    <Text fontWeight='bold' pb='10px'>
-                      {event?.venue}
-                    </Text>
+                    Venue: <Text fontWeight='bold'>{event?.venue}</Text>
                   </Heading>
                   <Heading size='sm' fontWeight='normal'>
                     Date:{' '}
-                    <Text fontWeight='bold' pb='10px'>
+                    <Text fontWeight='bold'>
                       {date.getDate() +
                         ' ' +
                         date.toLocaleString('default', { month: 'long' }) +
@@ -84,7 +133,34 @@ const EventPage = ({ id }: { id: string }) => {
                       })}
                     </Text>
                   </Heading>
-                <EventBadge status={event?.status || 'Live'} />
+                  <EventBadge width='100px' status={event?.status || 'Live'} />
+                </Stack>
+                <Stack alignItems={'center'}>
+                  {status === 'authenticated' ? (
+                    <Button
+                      colorScheme={isMember ? 'red' : 'green'}
+                      w={{ base: '', md: '', lg: '220px' }}
+                      minW={{ base: '100%', md: '100%', lg: '220px' }}
+                      isLoading={isBtnLoading}
+                      onClick={handleClick}
+                      isDisabled={session?.user?.email === '1'}
+                    >
+                      {isMember ? 'Leave' : 'Join'}
+                    </Button>
+                  ) : (
+                    <Button
+                      colorScheme='green'
+                      w={{ base: '', md: '', lg: '220px' }}
+                      minW={{ base: '100%', md: '100%', lg: '220px' }}
+                      isLoading={status === 'loading'}
+                      as={Link}
+                      href={'/signin'}
+                    >
+                      Sign in to Join
+                    </Button>
+                  )}
+                </Stack>
+              </Stack>
             </CardBody>
           </Card>
         </Stack>

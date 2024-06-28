@@ -52,7 +52,8 @@ router.put('/:id', async (req, res) => {
     }
     if (member) {
       const com = await Community.findById(req.params.id);
-      updatedFields.members = [...com.members, member];
+      if(!com.members.includes(member)){
+      updatedFields.members = [...com.members, member];}
     }
 
     const updatedCommunity = await Community.findByIdAndUpdate(

@@ -47,14 +47,19 @@ router.post('/', async (req, res) => {
 // update event by id
 router.put('/:id', async (req, res) => {
   try {
-    const { name, description, date, venue, volunteers, status } = req.body;
+    const { name, description, date, venue, volunteer, status } = req.body;
     const updatedFields = {};
 
     if (name) updatedFields.name = name;
     if (description) updatedFields.description = description;
     if (date) updatedFields.date = date;
     if (venue) updatedFields.venue = venue;
-    if (volunteers) updatedFields.volunteers = volunteers;
+    if (volunteer) {
+      const event = await Event.findById(req.params.id);
+      if (!event.volunteers.includes(volunteer)) {
+        updatedFields.volunteers = [...event.volunteers, volunteer];
+      }
+    }
     if (status) updatedFields.status = status;
 
     const updatedEvent = await Event.findByIdAndUpdate(
@@ -63,6 +68,18 @@ router.put('/:id', async (req, res) => {
       { new: true }
     );
     res.send(updatedEvent);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
+router.put('/rmuser/:id', async (req, res) => {
+  try {
+    const { userId } = req.body;
+    const event = await Event.findById(req.params.id);
+    event.volunteers = event.volunteers.filter((volunteer) => volunteer != userId);
+    await event.save();
+    res.send(event);
   } catch (error) {
     res.status(500).send({ message: error.message });
   }

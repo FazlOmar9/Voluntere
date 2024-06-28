@@ -1,15 +1,15 @@
 import apiClient from '@/services/apiClient';
 
 export const addMember = async (
-  communityId: string | null,
+  eventId: string | null,
   username: string | null,
   uid: string | null,
   callback?: () => void
 ) => {
   await apiClient
-    .put(`/community/${communityId}`, { member: uid })
+    .put(`/event/${eventId}`, { volunteer: uid })
     .then(async () => {
-      await apiClient.put(`/user/`, { username, community: communityId });
+      await apiClient.put(`/user/`, { username, event: eventId });
     })
     .finally(() => {
       if (callback) callback();
@@ -17,15 +17,15 @@ export const addMember = async (
 };
 
 export const removeMember = async (
-  communityId: string | null,
+  eventId: string | null,
   username: string | null,
   uid: string | null,
   callback?: () => void
 ) => {
   await apiClient
-    .put(`/community/rmuser/${communityId}`, { userId: uid })
+    .put(`/event/rmuser/${eventId}`, { userId: uid })
     .then(async () => {
-      await apiClient.put(`/user/rmcommunity/`, { username, communityId });
+      await apiClient.put(`/user/rmevent/`, { username, eventId });
     })
     .finally(() => {
       if (callback) callback();

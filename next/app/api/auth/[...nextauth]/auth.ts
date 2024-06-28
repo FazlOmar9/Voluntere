@@ -4,7 +4,6 @@ import { Session, SessionStrategy } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { User as NextAuthUser } from 'next-auth';
 import apiClient from '@/services/apiClient';
-import { AdapterUser } from 'next-auth/adapters';
 import { JWT } from 'next-auth/jwt';
 
 interface User extends NextAuthUser {
