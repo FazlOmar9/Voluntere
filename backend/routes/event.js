@@ -13,7 +13,7 @@ router.get('/', async (req, res) => {
 
     let events = [];
     if (community) {
-      events = await Event.find({ community: community }).skip(skip).limit(limit);
+      events = await Event.find({ community }).skip(skip).limit(limit);
     } else {
       events = await Event.find().skip(skip).limit(limit);
     }

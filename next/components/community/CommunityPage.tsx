@@ -10,6 +10,7 @@ import {
   CardBody,
   CardHeader,
   Flex,
+  HStack,
   Heading,
   Image,
   SimpleGrid,
@@ -64,7 +65,7 @@ const CommunityPage = ({ id }: { id: string }) => {
     const successCallback = () => {
       setIsMember((r) => !r);
       setIsBtnLoading(false);
-    }
+    };
     setIsBtnLoading(true);
     isMember
       ? removeMember(
@@ -157,7 +158,18 @@ const CommunityPage = ({ id }: { id: string }) => {
         mr='10px'
       >
         <CardHeader>
-          <Heading size='lg'>Events</Heading>
+          <HStack justifyContent={'space-between'} alignItems={'baseline'}>
+            <Heading size='lg'>Events</Heading>
+            <Button
+              color='black'
+              as='a'
+              variant='link'
+              href={`/communities/${id}/events`}
+              display={events?.length || 0 > 5 ? 'block' : 'none'}
+            >
+              Show more
+            </Button>
+          </HStack>
         </CardHeader>
         <SimpleGrid
           columns={{

@@ -5,8 +5,8 @@ import useEvent from '../../hooks/useEvent';
 import CardSkeleton from '../community/CardSkeleton';
 import EventCard from './EventCard';
 
-const EventList = () => {
-  const { data: events, error, isLoading } = useEvent();
+const EventList = ({community}:{community?: string}) => {
+  const { data: events, error, isLoading } = useEvent(community);
 
   // if (error) throw new Error(error.message);
   // TODO: Handle error

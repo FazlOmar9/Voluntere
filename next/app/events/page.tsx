@@ -11,7 +11,7 @@ const page = async () => {
 
   await queryClient.prefetchQuery({
     queryKey: ['events'],
-    queryFn: fetchEvents,
+    queryFn: () => fetchEvents(),
   });
 
   return (
