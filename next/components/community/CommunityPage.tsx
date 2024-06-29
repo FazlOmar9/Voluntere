@@ -5,10 +5,14 @@ import useEventList from '@/hooks/useEventList';
 import { addMember, removeMember } from '@/hooks/useCommunityMembership';
 import {
   Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
   Button,
   Card,
   CardBody,
   CardHeader,
+  Divider,
   Flex,
   HStack,
   Heading,
@@ -22,6 +26,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import EventCard from '../event/EventCard';
 import { useEffect, useState } from 'react';
+import { ChevronRightIcon } from '@chakra-ui/icons';
 
 const CommunityPage = ({ id }: { id: string }) => {
   const { data: session, status } = useSession();
@@ -83,112 +88,131 @@ const CommunityPage = ({ id }: { id: string }) => {
   };
 
   return (
-    <Box p='20px 10px 10px 20px' minH='100vh'>
-      <Card
-        p='10px 10px 10px 10px'
-        width='100%'
-        maxW='1000px'
-        bgColor='rgba(0, 0, 0, 0.05)'
+    <>
+      <Breadcrumb
+        spacing='8px'
+        separator={<ChevronRightIcon color='gray.500' />}
+        p='10px'
+        fontSize='xl'
+        fontWeight='bold'
       >
-        <CardHeader borderBottom='1px'>
-          <Stack
-            justifyContent='space-between'
-            align='end'
-            direction={{ base: 'column', md: 'row' }}
-            alignItems={{ base: 'center', md: 'end' }}
-          >
-            <Image
-              src='https://placehold.co/600x400'
-              alt='community image'
-              height='200px'
-            />
-            <Stack spacing={'50px'}>
-              <Stack>
-                <Heading size='xl' pt='10px'>
-                  {community?.name}
-                </Heading>
-                <Heading size='sm' fontWeight='normal'>
-                  Moderated by <Text fontWeight='bold'>{community?.mod}</Text>
-                </Heading>
-                <Heading size='sm' fontWeight='normal'>
-                  Members{' '}
-                  <Text fontWeight='bold' as='span'>
-                    {community?.members.length}
-                  </Text>
-                </Heading>
-              </Stack>
+        <BreadcrumbItem>
+          <BreadcrumbLink href='/communities'>Communities</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem isCurrentPage>
+          <BreadcrumbLink href={`/communities/${id}`} isTruncated width={'150px'}>
+            {community?.name}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+      </Breadcrumb>
+      <Divider borderColor='gray.400' />
+      <Box p='20px 10px 10px 20px' minH='100vh'>
+        <Card
+          p='10px 10px 10px 10px'
+          width='100%'
+          maxW='1000px'
+          bgColor='rgba(0, 0, 0, 0.05)'
+        >
+          <CardHeader borderBottom='1px'>
+            <Stack
+              justifyContent='space-between'
+              align='end'
+              direction={{ base: 'column', md: 'row' }}
+              alignItems={{ base: 'center', md: 'end' }}
+            >
+              <Image
+                src='https://placehold.co/600x400'
+                alt='community image'
+                height='200px'
+              />
+              <Stack spacing={'50px'}>
+                <Stack>
+                  <Heading size='xl' pt='10px'>
+                    {community?.name}
+                  </Heading>
+                  <Heading size='sm' fontWeight='normal'>
+                    Moderated by <Text fontWeight='bold'>{community?.mod}</Text>
+                  </Heading>
+                  <Heading size='sm' fontWeight='normal'>
+                    Members{' '}
+                    <Text fontWeight='bold' as='span'>
+                      {community?.members.length}
+                    </Text>
+                  </Heading>
+                </Stack>
 
-              <Stack alignItems={'center'}>
-                {status === 'authenticated' ? (
-                  <Button
-                    width={'100%'}
-                    maxW={'220px'}
-                    isDisabled={session?.user?.email === '1'}
-                    isLoading={isBtnLoading}
-                    colorScheme={isMember ? 'red' : 'green'}
-                    onClick={handleClick}
-                  >
-                    {isMember ? 'Leave' : 'Join'}
-                  </Button>
-                ) : (
-                  <Button
-                    width={'100%'}
-                    maxW={'220px'}
-                    colorScheme='green'
-                    isLoading={status === 'loading'}
-                    as={Link}
-                    href={'/signin'}
-                  >
-                    Sign in to Join
-                  </Button>
-                )}
+                <Stack alignItems={'center'}>
+                  {status === 'authenticated' ? (
+                    <Button
+                      width={'100%'}
+                      maxW={'220px'}
+                      isDisabled={session?.user?.email === '1'}
+                      isLoading={isBtnLoading}
+                      colorScheme={isMember ? 'red' : 'green'}
+                      onClick={handleClick}
+                    >
+                      {isMember ? 'Leave' : 'Join'}
+                    </Button>
+                  ) : (
+                    <Button
+                      width={'100%'}
+                      maxW={'220px'}
+                      colorScheme='green'
+                      isLoading={status === 'loading'}
+                      as={Link}
+                      href={'/signin'}
+                    >
+                      Sign in to Join
+                    </Button>
+                  )}
+                </Stack>
               </Stack>
             </Stack>
-          </Stack>
-        </CardHeader>
-        <CardBody>
-          <Heading size='md'>About</Heading>
-          <Text>{community?.description}</Text>
-        </CardBody>
-      </Card>
-      <Card
-        bgColor='rgba(0, 0, 0, 0.05)'
-        p='10px 20px 10px 20px'
-        mt='20px'
-        mr='10px'
-      >
-        <CardHeader>
-          <HStack justifyContent={'space-between'} alignItems={'baseline'}>
-            <Heading size='lg'>Events</Heading>
-            <Button
-              color='black'
-              as='a'
-              variant='link'
-              href={`/communities/${id}/events`}
-              display={events?.length || 0 > 5 ? 'block' : 'none'}
-            >
-              Show more
-            </Button>
-          </HStack>
-        </CardHeader>
-        <SimpleGrid
-          columns={{
-            base: 1,
-            sm: 2,
-            md: 3,
-            lg: 4,
-            xl: 5,
-          }}
-          spacing={6}
-          pt='10px'
-          pb='10px'
+          </CardHeader>
+          <CardBody>
+            <Heading size='md'>About</Heading>
+            <Text>{community?.description}</Text>
+          </CardBody>
+        </Card>
+        <Card
+          bgColor='rgba(0, 0, 0, 0.05)'
+          p='10px 20px 10px 20px'
+          mt='20px'
+          mr='10px'
         >
-          {events?.map((e, ind) => {
-            return <EventCard key={ind}>{e}</EventCard>;
-          })}
-        </SimpleGrid>
-      </Card>
-    </Box>
+          <CardHeader>
+            <HStack justifyContent={'space-between'} alignItems={'baseline'}>
+              <Heading size='lg'>Events</Heading>
+              <Button
+                color='black'
+                as='a'
+                variant='link'
+                href={`/communities/${id}/events`}
+                display={events?.length || 0 > 5 ? 'block' : 'none'}
+              >
+                Show more
+              </Button>
+            </HStack>
+          </CardHeader>
+          <SimpleGrid
+            columns={{
+              base: 1,
+              sm: 2,
+              md: 3,
+              lg: 4,
+              xl: 5,
+            }}
+            spacing={6}
+            pt='10px'
+            pb='10px'
+          >
+            {events?.map((e, ind) => {
+              return <EventCard key={ind}>{e}</EventCard>;
+            })}
+          </SimpleGrid>
+        </Card>
+      </Box>
+    </>
   );
 };
 

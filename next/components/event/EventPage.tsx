@@ -3,10 +3,14 @@
 import useSingleEvent from '@/hooks/useSingleEvent';
 import {
   Box,
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
   Button,
   Card,
   CardBody,
   CardHeader,
+  Divider,
   Flex,
   Heading,
   Image,
@@ -19,6 +23,7 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { addMember, removeMember } from '@/hooks/useEventMembership';
+import { ChevronRightIcon } from '@chakra-ui/icons';
 
 const EventPage = ({ id }: { id: string }) => {
   const { data: event, isLoading } = useSingleEvent(id);
@@ -67,6 +72,23 @@ const EventPage = ({ id }: { id: string }) => {
 
   return (
     <>
+      <Breadcrumb
+        spacing='8px'
+        separator={<ChevronRightIcon color='gray.500' />}
+        p='10px'
+        fontSize='xl'
+        fontWeight='bold'
+      >
+        <BreadcrumbItem>
+          <BreadcrumbLink href='/events'>Events</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem isCurrentPage>
+          <BreadcrumbLink href={`/events/${id}`} isTruncated width={'150px'}>
+            {event?.name}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
+      </Breadcrumb>
+      <Divider borderColor='gray.400' />
       <Box p='20px 10px 10px 10px' minH='100vh'>
         <Stack direction={{ base: 'column', md: 'column', lg: 'row' }}>
           <Card maxW='900px' bgColor='rgba(0, 0, 0, 0.05)'>

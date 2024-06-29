@@ -1,19 +1,27 @@
 'use client';
 
-import { Divider, Heading, SimpleGrid } from '@chakra-ui/react';
+import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, Divider, Heading, SimpleGrid } from '@chakra-ui/react';
 import useCommunity from '../../hooks/useCommunity';
 import CardSkeleton from './CardSkeleton';
 import CommunityCard from './CommunityCard';
+import { ChevronRightIcon } from '@chakra-ui/icons';
 
 const CommunityList = () => {
-  const { data: communities, error, isLoading } = useCommunity();
-
-  // if (error) throw new Error(error.message);
-  if (error) console.log(error.message);
+  const { data: communities, isLoading } = useCommunity();
 
   return (
     <>
-      <Heading p='20px'>Communities</Heading>
+      <Breadcrumb
+        spacing='8px'
+        separator={<ChevronRightIcon color='gray.500' />}
+        p='10px'
+        fontSize='xl'
+        fontWeight='bold'
+      >
+        <BreadcrumbItem isCurrentPage>
+          <BreadcrumbLink href='/communities'>Communities</BreadcrumbLink>
+        </BreadcrumbItem>
+      </Breadcrumb>
       <Divider borderColor='gray.400' />
       <SimpleGrid
         columns={{ sm: 1, md: 2, lg: 3, xl: 4, '2xl': 5 }}

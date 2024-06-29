@@ -9,23 +9,37 @@ import {
 } from '@chakra-ui/react';
 import useEvent from '../../hooks/useEvent';
 import CardSkeleton from '../community/CardSkeleton';
-import EventCard from './EventCard';
+import EventCard from '../event/EventCard';
 import { ChevronRightIcon } from '@chakra-ui/icons';
+import useSingleCommunity from '@/hooks/useSingleCommunity';
 
-const EventList = () => {
-  const { data: events, isLoading } = useEvent();
+const CommunityEventsPage = ({ community }: { community?: string }) => {
+  const { data: events, isLoading } = useEvent(community);
+  const { data: com } = useSingleCommunity(community || '');
 
   return (
     <>
       <Breadcrumb
         spacing='8px'
         separator={<ChevronRightIcon color='gray.500' />}
+        p='10px'
         fontSize='xl'
         fontWeight='bold'
-        p='10px'
       >
+        <BreadcrumbItem>
+          <BreadcrumbLink href='/communities'>Communities</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbItem>
+          <BreadcrumbLink
+            href={`/communities/${community}`}
+            isTruncated
+            width={'150px'}
+          >
+            {com?.name}
+          </BreadcrumbLink>
+        </BreadcrumbItem>
         <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink href='/events'>Events</BreadcrumbLink>
+          <BreadcrumbLink href={`/communities/${community}/events`}>Events</BreadcrumbLink>
         </BreadcrumbItem>
       </Breadcrumb>
       <Divider borderColor='gray.400' />
@@ -46,4 +60,4 @@ const EventList = () => {
   );
 };
 
-export default EventList;
+export default CommunityEventsPage;
