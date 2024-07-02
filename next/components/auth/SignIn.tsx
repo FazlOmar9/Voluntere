@@ -79,7 +79,7 @@ const SignIn = () => {
       </Flex>
     );
   } else if (status === 'authenticated') {
-    // router.push('/');
+    router.push('/');
     return null;
   }
 

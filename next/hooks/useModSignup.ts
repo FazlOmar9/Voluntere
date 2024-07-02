@@ -26,6 +26,7 @@ const useModSignup = (data: FormDataMS | null) => {
             .post('/community', {
               name: data.communityName,
               description: data.communityDescription,
+              mod: r1.data._id,
             })
             .then((r2) => {
               if (r1.status == 200 && r2.status == 200) setIsSubmitted(true);

@@ -25,6 +25,17 @@ router.get('/:username', async (req, res) => {
   }
 });
 
+router.get('/detailed/:username', async (req, res) => {
+  try {
+    const user = await User.findOne({ username: req.params.username })
+      .populate('events')
+      .populate('communities');
+    res.send(user);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
+
 router.post('/auth', async (req, res) => {
   try {
     const { username, password } = req.body;

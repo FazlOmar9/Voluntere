@@ -91,7 +91,7 @@ export default function NavBar() {
                   fontSize={'sm'}
                   fontWeight={600}
                   variant={'link'}
-                  href={'/signin'}
+                  href={'/dashboard'}
                 >
                   {session.user?.name}
                 </Button>
@@ -125,7 +125,7 @@ export default function NavBar() {
                   fontSize={'sm'}
                   fontWeight={600}
                   variant={'link'}
-                  href={'/signin'}
+                  href={'/dashboard'}
                 >
                   {session.user?.name}
                 </Button>

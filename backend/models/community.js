@@ -17,6 +17,7 @@ const communitySchema = new mongoose.Schema({
   mod: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Mod',
+    required: true,
   },
   members: {
     type: [mongoose.Schema.Types.ObjectId],

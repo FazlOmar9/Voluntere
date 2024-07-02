@@ -26,7 +26,7 @@ const CommunityCard = ({ children: community }: Props) => {
       href={redirect}
     >
       <Image
-        src={'https://via.placeholder.com/150'}
+        src={'https://images.dog.ceo/breeds/retriever-golden/Z6A_4365_200807.jpg'}
         alt='Community Image'
         height='150px'
         width='100%'
