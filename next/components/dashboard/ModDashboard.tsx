@@ -26,11 +26,11 @@ import { useSession } from 'next-auth/react';
 import EventCard from '../event/EventCard';
 
 const ModDashboard = () => {
-  const { data: session } = useSession();
-  const { data: community } = useCommunityByMod(session?.user?.image || '');
-  const { data: events, isLoading } = useEventList(community?._id || '');
+  const { data: session, status } = useSession();
+  const { data: community, isLoading: l2 } = useCommunityByMod(session?.user?.image || '');
+  const { data: events, isLoading: l1 } = useEventList(community?._id || '');
 
-  if (isLoading)
+  if (l1 || l2 || status === 'loading')
     return (
       <Flex justifyContent='center' alignItems='center' minH='100vh'>
         <Spinner color='black' />
@@ -87,25 +87,33 @@ const ModDashboard = () => {
             bgColor='rgba(0, 0, 0, 0.05)'
           >
             <CardBody>
-              <Stack spacing={'100px'} direction={'column'}>
+              <Stack spacing={'50px'} direction={'column'}>
                 <Stack spacing={3} direction={'column'}>
                   <Heading size={'lg'}>Manage</Heading>
-                    <Table variant={'striped'} colorScheme='green'>
-                      <Tbody>
-                        <Tr>
-                          <Td>Members</Td>
-                          <Td>{community?.members.length}</Td>
-                        </Tr>
-                        <Tr>
-                          <Td>Events</Td>
-                          <Td>{community?.events.length}</Td>
-                        </Tr>
-                        <Tr>
-                          <Td>Moderators</Td>
-                          <Td>1</Td>
-                        </Tr>
-                      </Tbody>
-                    </Table>
+                  <Table variant={'striped'} colorScheme='green'>
+                    <Tbody>
+                      <Tr>
+                        <Td>Members</Td>
+                        <Td fontWeight={'bold'}>{community?.members.length}</Td>
+                      </Tr>
+                      <Tr>
+                        <Td>Events</Td>
+                        <Td fontWeight={'bold'}>{community?.events.length}</Td>
+                      </Tr>
+                      <Tr>
+                        <Td>Moderators</Td>
+                        <Td fontWeight={'bold'}>1</Td>
+                      </Tr>
+                    </Tbody>
+                  </Table>
+                </Stack>
+                <Stack direction={'row'}>
+                  <Button colorScheme='green' w={'100%'}>
+                    Create event
+                  </Button>
+                  <Button colorScheme='red' w={'100%'} as={'a'} href='/moderator/remove'>
+                    Remove event
+                  </Button>
                 </Stack>
               </Stack>
             </CardBody>
@@ -114,7 +122,7 @@ const ModDashboard = () => {
         <Card
           p='10px 10px 10px 10px'
           bgColor='rgba(0, 0, 0, 0.05)'
-          mt='20px'
+          mt='10px'
           maxW={'1500px'}
         >
           <CardHeader>
@@ -125,7 +133,9 @@ const ModDashboard = () => {
                 as='a'
                 variant='link'
                 href={`/communities/${community?._id}/events`}
-                display={(community?.events?.length || 0) > 5 ? 'block' : 'none'}
+                display={
+                  (community?.events?.length || 0) > 5 ? 'block' : 'none'
+                }
               >
                 Show more
               </Button>

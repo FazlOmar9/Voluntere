@@ -33,12 +33,12 @@ router.get('/mod/:id', async (req, res) => {
     if (!mod) {
       res.status(400).send({ message: 'mod id is required' });
     }
-    const community = await Community.findOne({mod});
+    const community = await Community.findOne({ mod });
     res.send(community);
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
-})
+});
 
 // create a new community
 router.post('/', async (req, res) => {
@@ -65,8 +65,9 @@ router.put('/:id', async (req, res) => {
     }
     if (member) {
       const com = await Community.findById(req.params.id);
-      if(!com.members.includes(member)){
-      updatedFields.members = [...com.members, member];}
+      if (!com.members.includes(member)) {
+        updatedFields.members = [...com.members, member];
+      }
     }
 
     const updatedCommunity = await Community.findByIdAndUpdate(
@@ -87,7 +88,9 @@ router.put('/rmuser/:id', async (req, res) => {
     const community = await Community.findById(req.params.id);
     const members = community.members;
 
-    const updatedMembers = members.filter((member) => member.toString() !== userId);
+    const updatedMembers = members.filter(
+      (member) => member.toString() !== userId
+    );
     const updatedCommunity = await Community.findByIdAndUpdate(
       req.params.id,
       { members: updatedMembers },
@@ -100,6 +103,26 @@ router.put('/rmuser/:id', async (req, res) => {
   }
 });
 
+router.put('/rmevent/:id', async (req, res) => {
+  try {
+    const { eventId } = req.body;
+    const community = await Community.findById(req.params.id);
+    const events = community.events;
+
+    const updatedEvents = events.filter(
+      (event) => event.toString() !== eventId
+    );
+    const updatedCommunity = await Community.findByIdAndUpdate(
+      req.params.id,
+      { events: updatedEvents },
+      { new: true }
+    );
+
+    res.send(updatedCommunity);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+});
 // delete community by id
 router.delete('/:id', async (req, res) => {
   try {
