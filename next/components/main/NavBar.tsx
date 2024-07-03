@@ -91,7 +91,7 @@ export default function NavBar() {
                   fontSize={'sm'}
                   fontWeight={600}
                   variant={'link'}
-                  href={'/dashboard'}
+                  href={'/moderator'}
                 >
                   {session.user?.name}
                 </Button>

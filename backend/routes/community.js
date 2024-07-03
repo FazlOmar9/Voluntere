@@ -27,6 +27,19 @@ router.get('/:id', async (req, res) => {
   }
 });
 
+router.get('/mod/:id', async (req, res) => {
+  try {
+    const mod = req.params.id;
+    if (!mod) {
+      res.status(400).send({ message: 'mod id is required' });
+    }
+    const community = await Community.findOne({mod});
+    res.send(community);
+  } catch (error) {
+    res.status(500).send({ message: error.message });
+  }
+})
+
 // create a new community
 router.post('/', async (req, res) => {
   try {

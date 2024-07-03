@@ -188,7 +188,7 @@ const CommunityPage = ({ id }: { id: string }) => {
                 as='a'
                 variant='link'
                 href={`/communities/${id}/events`}
-                display={(events?.length || 0) > 5 ? 'block' : 'none'}
+                display={(community?.events?.length || 0) > 5 ? 'block' : 'none'}
               >
                 Show more
               </Button>

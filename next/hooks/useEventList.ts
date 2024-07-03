@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 
 const useEventList = (id: string) => {
   const fetchEvents = (id: string) => {
+    if (id)
       return apiClient
         .get<Event[]>(`/event`, {
           params: {
@@ -12,11 +13,13 @@ const useEventList = (id: string) => {
           },
         })
         .then((res) => res.data);
+    return null;
   };
 
   return useQuery({
     queryKey: ['community-events'],
     queryFn: () => fetchEvents(id),
+    enabled: !!id,
   });
 };
 

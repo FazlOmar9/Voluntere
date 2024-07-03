@@ -53,7 +53,7 @@ const options = {
               if (res.status === 200) {
                 return {
                   name: res.data.username,
-                  email: res.data.email,
+                  email: credentials.mod,
                   image: res.data._id,
                 } as User;
               } else {
