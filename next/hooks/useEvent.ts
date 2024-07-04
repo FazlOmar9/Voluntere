@@ -16,7 +16,7 @@ export interface Event {
 export const fetchEvents = (community?: string, limit ?: number) =>
   apiClient
     .get<Event[]>('/event', {
-      params: { limit: limit || 20, community },
+      params: { limit: limit || 1000, community },
     })
     .then((res) => res.data);
 

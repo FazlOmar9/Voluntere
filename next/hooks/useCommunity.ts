@@ -10,7 +10,11 @@ export interface Community {
   members: string[];
 }
 export const fetchCommunities = () =>
-  apiClient.get<Community[]>('/community?limit=20').then((res) => res.data);
+  apiClient
+    .get<Community[]>('/community', {
+      params: { limit: 1000 },
+    })
+    .then((res) => res.data);
 
 const useCommunity = () => {
   return useQuery({
