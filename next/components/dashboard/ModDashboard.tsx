@@ -108,7 +108,7 @@ const ModDashboard = () => {
                   </Table>
                 </Stack>
                 <Stack direction={'row'}>
-                  <Button colorScheme='green' w={'100%'}>
+                  <Button colorScheme='green' w={'100%'} as={'a'} href='/moderator/create'>
                     Create event
                   </Button>
                   <Button colorScheme='red' w={'100%'} as={'a'} href='/moderator/remove'>

@@ -60,8 +60,10 @@ router.put('/:id', async (req, res) => {
     if (name) updatedFields.name = name;
     if (description) updatedFields.description = description;
     if (event) {
-      const events = await Community.findById(req.params.id).events;
-      updatedFields.events = [...events, event];
+      const com = await Community.findById(req.params.id);
+      if (!com.events.includes(event)) {
+        updatedFields.events = [...com.events, event];
+      }
     }
     if (member) {
       const com = await Community.findById(req.params.id);
