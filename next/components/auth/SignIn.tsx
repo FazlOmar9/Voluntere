@@ -63,7 +63,7 @@ const SignIn = () => {
     }).then((res) => {
       setIsLoading(false);
       return res;
-    })
+    });
 
     if (result?.error) {
       setError(result.error);
@@ -139,8 +139,15 @@ const SignIn = () => {
                   {errors.password && errors.password.message}
                 </FormErrorMessage>
               </FormControl>
-              <Stack spacing={10}>
-                <Checkbox>Remember me</Checkbox>
+              <Stack spacing={3} mt={10} alignItems={'start'}>
+                <Button
+                  as={'a'}
+                  href='/signup'
+                  variant={'link'}
+                  color={'blue.600'}
+                >
+                  Not a member? Sign up now
+                </Button>
                 <Button
                   size='lg'
                   bg={'blue.400'}
@@ -151,13 +158,14 @@ const SignIn = () => {
                   loadingText='Signing In'
                   isLoading={isLoading}
                   type='submit'
+                  w='100%'
                 >
                   Sign in
                 </Button>
               </Stack>
               {error && (
                 <Text color='red.500' textAlign='center'>
-                  {error}
+                  Incorrect username or password
                 </Text>
               )}
             </Stack>
