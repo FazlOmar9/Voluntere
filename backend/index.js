@@ -17,8 +17,12 @@ mongoose
     console.error('Error connecting to MongoDB:', error);
   });
 
-
-app.use(cors({ origin: process.env.ORIGIN || 'http://localhost:3000', credentials: true}));
+app.use(
+  cors({
+    origin: process.env.ORIGIN || 'http://localhost:3000',
+    credentials: true,
+  })
+);
 app.use(morgan('tiny'));
 app.use(helmet());
 
@@ -26,12 +30,12 @@ const mod = require('./routes/mod.js');
 const user = require('./routes/user.js');
 const community = require('./routes/community.js');
 const event = require('./routes/event.js');
+const upload = require('./routes/upload.js');
 
-app.get('/', (_, res) => 
-  res.send('Hello World!')
-)
+app.get('/', (_, res) => res.send('Hello World!'));
+app.use('/images', express.static('uploads'));
 
-
+app.use('/uploads', upload);
 app.use(express.json());
 app.use('/api/mod', mod);
 app.use('/api/user', user);

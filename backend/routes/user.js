@@ -39,15 +39,18 @@ router.get('/detailed/:username', async (req, res) => {
 router.post('/auth', async (req, res) => {
   try {
     const { username, password } = req.body;
+    console.log(username, password);
     const user = await User.findOne({ username });
     if (user) {
       const isPasswordMatch = await bcrypt.compare(password, user.password);
       if (isPasswordMatch) {
         res.send(user);
       } else {
+        console.log('incorrect pwd');
         res.status(400).send({ message: 'Invalid password' });
       }
     } else {
+      console.log('user not found');
       res.status(400).send({ message: 'User not found' });
     }
   } catch (error) {
