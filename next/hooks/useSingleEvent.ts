@@ -12,6 +12,7 @@ const useSingleEvent = (id: string) => {
   return useQuery({
     queryKey: ['events', id],
     queryFn: fetchSingleEvent,
+    enabled: !!id,
   });
 };
 

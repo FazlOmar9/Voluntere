@@ -16,6 +16,7 @@ interface Props {
 
 const EventCard = ({ children: event }: Props) => {
   const redirect = `/events/${event._id}`;
+  console.log(event.banner);
 
   return (
     <Card
@@ -27,13 +28,24 @@ const EventCard = ({ children: event }: Props) => {
       transition='box-shadow 0.2s'
       href={redirect}
     >
-      <Image
-        src={'https://via.placeholder.com/150'}
-        alt='Event Image'
-        height='150px'
-        width='100%'
-        objectFit='cover'
-      />
+      {event.banner ? (
+        <Image
+          crossOrigin='anonymous'
+          src={event.banner}
+          alt='event image'
+          width='100%'
+          height='150px'
+          objectFit='cover'
+        />
+      ) : (
+        <Image
+          src='https://via.placeholder.com/150'
+          alt='event image'
+          width='100%'
+          height='150px'
+          objectFit='cover'
+        />
+      )}
       <CardHeader borderBottom='1px'>
         <Box
           display='-webkit-box'

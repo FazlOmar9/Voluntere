@@ -51,6 +51,14 @@ router.post('/', multer({ storage }).single('file'), async (req, res) => {
         },
         { new: true }
       );
+    } else if (req.body.type === 'event') {
+      await Event.findByIdAndUpdate(
+        req.body.id,
+        {
+          banner: newImageUrl,
+        },
+        { new: true }
+      );
     }
     res.send('File uploaded successfully.');
   } catch (error) {

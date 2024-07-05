@@ -8,6 +8,7 @@ export interface Event {
   date: string;
   venue: string;
   requirement: number;
+  banner: string;
   community: string;
   volunteers: string[];
   status: 'Upcoming' | 'Live' | 'Closed' | 'Cancelled' | 'Ended';

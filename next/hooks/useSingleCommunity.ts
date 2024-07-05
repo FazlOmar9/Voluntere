@@ -10,6 +10,7 @@ const useSingleCommunity = (id: string) => {
   return useQuery({
     queryKey: ['community', id],
     queryFn: fetchSingleCommunity,
+    enabled: !!id
   });
 };
 
