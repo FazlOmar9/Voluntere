@@ -27,17 +27,27 @@ router.post('/', multer({ storage }).single('file'), async (req, res) => {
     if (!file) {
       return res.status(400).send('No file uploaded.');
     }
+    const newImageUrl =
+      'http://localhost:3010/images/' +
+      req.body.type +
+      '-' +
+      req.body.id +
+      '-' +
+      file.originalname;
+
     if (req.body.type === 'user') {
       await User.findOneAndUpdate(
         { username: req.body.id },
         {
-          profileImage:
-            'http://localhost:3010/images/' +
-            req.body.type +
-            '-' +
-            req.body.id +
-            '-' +
-            file.originalname,
+          profileImage: newImageUrl,
+        },
+        { new: true }
+      );
+    } else if (req.body.type === 'community') {
+      await Community.findByIdAndUpdate(
+        req.body.id,
+        {
+          banner: newImageUrl,
         },
         { new: true }
       );

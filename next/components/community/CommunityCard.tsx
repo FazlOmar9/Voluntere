@@ -26,10 +26,14 @@ const CommunityCard = ({ children: community }: Props) => {
       href={redirect}
     >
       <Image
-        src={'https://images.dog.ceo/breeds/retriever-golden/Z6A_4365_200807.jpg'}
-        alt='Community Image'
-        height='150px'
+        crossOrigin='anonymous'
+        src={
+          community?.banner ||
+          'https://images.dog.ceo/breeds/retriever-golden/Z6A_4365_200807.jpg'
+        }
+        alt='community image'
         width='100%'
+        height='150px'
         objectFit='cover'
       />
       <CardHeader borderBottom='1px'>

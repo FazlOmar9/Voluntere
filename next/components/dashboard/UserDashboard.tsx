@@ -1,6 +1,7 @@
 'use client';
 
 import useUser from '@/hooks/useUser';
+import imageApiClient from '@/services/imageApiClient';
 import {
   Badge,
   Box,
@@ -18,10 +19,10 @@ import {
   Text,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
-import EventCard from '../event/EventCard';
-import CommunityCard from '../community/CommunityCard';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import CommunityCard from '../community/CommunityCard';
+import EventCard from '../event/EventCard';
 import UserCommunities from './UserCommunities';
 import UserEvents from './UserEvents';
 
@@ -49,12 +50,8 @@ const UserDashboard = () => {
       formData.append('file', fileInput.files[0]);
 
       try {
-        const response = await fetch('http://localhost:3010/uploads', {
-          method: 'POST',
-          body: formData,
-        });
-
-        if (response.ok) {
+        const response = await imageApiClient.post('/uploads', formData);
+        if (response.status === 200) {
           setShowEdit(false);
           refetch();
           console.log('File uploaded successfully');
@@ -75,8 +72,6 @@ const UserDashboard = () => {
     );
 
   if (status === 'unauthenticated') router.push('/');
-
-  console.log(user);
 
   if (page === 0) {
     return (
@@ -120,7 +115,12 @@ const UserDashboard = () => {
                       name='file'
                       accept='image/png, image/jpeg'
                     />
-                    <Button size={'sm'} colorScheme='blackAlpha' type='submit' mt={1}>
+                    <Button
+                      size={'sm'}
+                      colorScheme='blackAlpha'
+                      type='submit'
+                      mt={1}
+                    >
                       Submit
                     </Button>
                   </form>

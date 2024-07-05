@@ -100,7 +100,11 @@ const CommunityPage = ({ id }: { id: string }) => {
           <BreadcrumbLink href='/communities'>Communities</BreadcrumbLink>
         </BreadcrumbItem>
         <BreadcrumbItem isCurrentPage>
-          <BreadcrumbLink href={`/communities/${id}`} isTruncated width={'150px'}>
+          <BreadcrumbLink
+            href={`/communities/${id}`}
+            isTruncated
+            width={'150px'}
+          >
             {community?.name}
           </BreadcrumbLink>
         </BreadcrumbItem>
@@ -121,9 +125,12 @@ const CommunityPage = ({ id }: { id: string }) => {
               alignItems={{ base: 'center', md: 'end' }}
             >
               <Image
-                src='https://placehold.co/600x400'
+                crossOrigin='anonymous'
+                src={community?.banner || 'https://placehold.co/600x400'}
                 alt='community image'
+                width='300px'
                 height='200px'
+                objectFit='cover'
               />
               <Stack spacing={'50px'}>
                 <Stack>
@@ -188,7 +195,9 @@ const CommunityPage = ({ id }: { id: string }) => {
                 as='a'
                 variant='link'
                 href={`/communities/${id}/events`}
-                display={(community?.events?.length || 0) > 5 ? 'block' : 'none'}
+                display={
+                  (community?.events?.length || 0) > 5 ? 'block' : 'none'
+                }
               >
                 Show more
               </Button>

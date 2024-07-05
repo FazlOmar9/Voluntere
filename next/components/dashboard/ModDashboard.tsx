@@ -20,15 +20,54 @@ import {
   Tbody,
   Td,
   Text,
-  Tr
+  Tr,
 } from '@chakra-ui/react';
 import { useSession } from 'next-auth/react';
 import EventCard from '../event/EventCard';
+import { useState } from 'react';
+import imageApiClient from '@/services/imageApiClient';
 
 const ModDashboard = () => {
   const { data: session, status } = useSession();
-  const { data: community, isLoading: l2 } = useCommunityByMod(session?.user?.image || '');
+  const {
+    data: community,
+    isLoading: l2,
+    refetch,
+  } = useCommunityByMod(session?.user?.image || '');
   const { data: events, isLoading: l1 } = useEventList(community?._id || '');
+
+  const [showEdit, setShowEdit] = useState<boolean>(false);
+
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    const formData = new FormData();
+    const fileInput = document.querySelector(
+      'input[type="file"]'
+    ) as HTMLInputElement;
+
+    formData.append('type', 'community');
+    if (session && session.user && community)
+      formData.append('id', community._id);
+
+    if (fileInput.files && (fileInput.files || []).length > 0) {
+      formData.append('file', fileInput.files[0]);
+
+      try {
+        const response = await imageApiClient.post('/uploads', formData);
+
+        if (response.status === 200) {
+          setShowEdit(false);
+          refetch();
+          console.log('File uploaded successfully');
+        } else {
+          console.error('Upload failed');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+  };
 
   if (l1 || l2 || status === 'loading')
     return (
@@ -60,22 +99,47 @@ const ModDashboard = () => {
                 direction={{ base: 'column', md: 'row' }}
                 alignItems={{ base: 'center', md: 'end' }}
               >
-                <Image
-                  src='https://placehold.co/600x400'
-                  alt='community image'
-                  height='200px'
-                />
+                <Stack alignItems={'center'}>
+                  <Image
+                    crossOrigin='anonymous'
+                    src={community?.banner || 'https://placehold.co/600x400'}
+                    alt='community image'
+                    width='300px'
+                    height='200px'
+                    objectFit='cover'
+                  />
+                  <Button
+                    variant={'link'}
+                    color={'blue.800'}
+                    mt={2}
+                    onClick={() => setShowEdit((r) => !r)}
+                  >
+                    {showEdit ? 'Cancel' : 'Change image'}
+                  </Button>
+                  <Box display={showEdit ? 'block' : 'none'}>
+                    <form encType='multipart/form-data' onSubmit={handleSubmit}>
+                      <input
+                        type='file'
+                        name='file'
+                        accept='image/png, image/jpeg'
+                      />
+                      <Button
+                        size={'sm'}
+                        colorScheme='blackAlpha'
+                        type='submit'
+                        mt={1}
+                      >
+                        Submit
+                      </Button>
+                    </form>
+                  </Box>
+                </Stack>
                 <Stack spacing={'20px'}>
                   <Heading size='xl' pt='10px'>
                     {community?.name}
-                    {/* Community name */}
                   </Heading>
                   <Heading size='sm' fontWeight='normal'>
-                    Moderated by{' '}
-                    <Text fontWeight='bold'>
-                      {community?.mod}
-                      {/* Da mod */}
-                    </Text>
+                    Moderated by <Text fontWeight='bold'>{community?.mod}</Text>
                   </Heading>
                 </Stack>
               </Stack>
@@ -108,10 +172,20 @@ const ModDashboard = () => {
                   </Table>
                 </Stack>
                 <Stack direction={'row'}>
-                  <Button colorScheme='green' w={'100%'} as={'a'} href='/moderator/create'>
+                  <Button
+                    colorScheme='green'
+                    w={'100%'}
+                    as={'a'}
+                    href='/moderator/create'
+                  >
                     Create event
                   </Button>
-                  <Button colorScheme='red' w={'100%'} as={'a'} href='/moderator/remove'>
+                  <Button
+                    colorScheme='red'
+                    w={'100%'}
+                    as={'a'}
+                    href='/moderator/remove'
+                  >
                     Remove event
                   </Button>
                 </Stack>
@@ -154,7 +228,6 @@ const ModDashboard = () => {
             pb='10px'
           >
             {events?.map((e, ind) => {
-              console.log(e);
               return <EventCard key={ind}>{e}</EventCard>;
             })}
           </SimpleGrid>

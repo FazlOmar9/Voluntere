@@ -8,6 +8,7 @@ export interface Community {
   events: string[];
   mod: string;
   members: string[];
+  banner: string;
 }
 export const fetchCommunities = () =>
   apiClient

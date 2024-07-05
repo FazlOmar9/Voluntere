@@ -17,7 +17,6 @@ interface UserDetailed {
 const useUser = (username: string) => {
   const fetchUser = (username: string) =>
     apiClient.get<UserDetailed>(`/user/detailed/${username}`).then((res) => {
-      console.log(res.data);
       return res.data;
     });
 
