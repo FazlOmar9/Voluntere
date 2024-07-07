@@ -69,7 +69,7 @@ const options = {
             })
             .then((res) => {
               if (res.status === 200) {
-                console.log("Creds match");
+                console.log('Creds match');
                 return {
                   name: res.data.username,
                   email: credentials.mod,
@@ -86,9 +86,10 @@ const options = {
   ],
   session: {
     strategy: 'jwt' as SessionStrategy,
+    maxAge: 24 * 60 * 60, // 1 day
   },
   callbacks: {
-    async jwt({token, user}: {token: JWT, user: NextAuthUser}) {
+    async jwt({ token, user }: { token: JWT; user: NextAuthUser }) {
       if (user) {
         token.name = user.name;
         token.email = user.email;
