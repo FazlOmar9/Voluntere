@@ -50,7 +50,7 @@ const UserDashboard = () => {
       formData.append('file', fileInput.files[0]);
 
       try {
-        const response = await imageApiClient.post('/uploads', formData);
+        const response = await imageApiClient.post('/', formData);
         if (response.status === 200) {
           setShowEdit(false);
           refetch();
@@ -71,7 +71,8 @@ const UserDashboard = () => {
       </Flex>
     );
 
-  if (status === 'unauthenticated' || session?.user?.email !== '0') router.push('/');
+  if (status === 'unauthenticated' || session?.user?.email !== '0')
+    router.push('/');
 
   if (page === 0) {
     return (

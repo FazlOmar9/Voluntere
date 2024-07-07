@@ -56,7 +56,7 @@ const ModDashboard = () => {
       formData.append('file', fileInput.files[0]);
 
       try {
-        const response = await imageApiClient.post('/uploads', formData);
+        const response = await imageApiClient.post('/', formData);
 
         if (response.status === 200) {
           setShowEdit(false);
