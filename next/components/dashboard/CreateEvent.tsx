@@ -22,6 +22,7 @@ import {
 import { useSession } from 'next-auth/react';
 import useCreateEvent from '@/hooks/useCreateEvent';
 import useCommunityByMod from '@/hooks/useCommunityByMod';
+import { useRouter } from 'next/navigation';
 
 const schema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
@@ -54,9 +55,10 @@ const CreateEvent = () => {
   };
 
   const { data: session, status } = useSession();
-  const { data: community } = useCommunityByMod(session?.user?.image || '');
+  const { data: community, isLoading: l1 } = useCommunityByMod(session?.user?.image || '');
 
   const { isSubmitted, isLoading, error } = useCreateEvent(data, community?._id || '');
+  const router = useRouter();
 
   useEffect(() => {
     if (!isSubmitted) return;
@@ -81,13 +83,15 @@ const CreateEvent = () => {
     });
   }, [error]);
 
-  if (status === 'loading') {
+  if (l1 || status === 'loading') {
     return (
       <Flex minH={'100vh'} align={'center'} justify={'center'}>
         <Spinner color='black' />
       </Flex>
     );
   }
+
+  if (status === 'unauthenticated' || session?.user?.email !== '1') router.push('/');
 
   return (
     <Flex direction='column' align='center' justify='center' bg='gray.50'>

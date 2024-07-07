@@ -21,7 +21,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import MessageModal from './MessageModal';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -68,9 +67,6 @@ const UserSignup = () => {
   });
 
   const [data, setData] = useState<FormDataUS | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [modalMessage, setModalMessage] = useState<string>('');
-  const [modalLink, setModalLink] = useState<string>('');
 
   const onSubmit = (data: FormDataUS) => {
     setData(data);
@@ -228,13 +224,6 @@ const UserSignup = () => {
             </Button>
           </VStack>
         </form>
-        <MessageModal
-          isOpen={isModalOpen}
-          isSuccess={isSubmitted}
-          link={modalLink}
-        >
-          {modalMessage}
-        </MessageModal>
       </Box>
     </Flex>
   );

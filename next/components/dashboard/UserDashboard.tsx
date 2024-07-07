@@ -71,7 +71,7 @@ const UserDashboard = () => {
       </Flex>
     );
 
-  if (status === 'unauthenticated') router.push('/');
+  if (status === 'unauthenticated' || session?.user?.email !== '0') router.push('/');
 
   if (page === 0) {
     return (

@@ -26,6 +26,7 @@ import { useSession } from 'next-auth/react';
 import EventCard from '../event/EventCard';
 import { useState } from 'react';
 import imageApiClient from '@/services/imageApiClient';
+import { useRouter } from 'next/navigation';
 
 const ModDashboard = () => {
   const { data: session, status } = useSession();
@@ -35,6 +36,7 @@ const ModDashboard = () => {
     refetch,
   } = useCommunityByMod(session?.user?.image || '');
   const { data: events, isLoading: l1 } = useEventList(community?._id || '');
+  const router = useRouter();
 
   const [showEdit, setShowEdit] = useState<boolean>(false);
 
@@ -75,6 +77,9 @@ const ModDashboard = () => {
         <Spinner color='black' />
       </Flex>
     );
+
+  if (status === 'unauthenticated' || session?.user?.email !== '1')
+    router.push('/');
 
   if (community !== undefined && events !== undefined)
     return (

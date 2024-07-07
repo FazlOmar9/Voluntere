@@ -14,14 +14,17 @@ export interface Event {
   status: 'Upcoming' | 'Live' | 'Closed' | 'Cancelled' | 'Ended';
 }
 
-export const fetchEvents = (community?: string, limit ?: number) =>
-  apiClient
+export const fetchEvents = (community?: string, limit?: number) => {
+  if (community === '') return;
+
+  return apiClient
     .get<Event[]>('/event', {
       params: { limit: limit || 1000, community },
     })
     .then((res) => res.data);
+};
 
-const useEvent = (community?: string, limit ?: number) => {
+const useEvent = (community?: string, limit?: number) => {
   return useQuery({
     queryKey: ['events'],
     queryFn: () => fetchEvents(community, limit),

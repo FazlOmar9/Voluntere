@@ -20,21 +20,30 @@ import { useSession } from 'next-auth/react';
 import EventBadge from '../event/EventBadge';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import useRemoveEvent from '@/hooks/useRemoveEvent';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const RemoveEvent = () => {
   const { data: session, status } = useSession();
-  const { data: community } = useCommunityByMod(session?.user?.image || '');
+  const { data: community, isLoading: l1 } = useCommunityByMod(
+    session?.user?.image || ''
+  );
   const { data: events, refetch } = useEvent(community?._id || '', 1000);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const router = useRouter();
 
-  if (status === 'loading')
+  if (l1 || status === 'loading')
     return (
       <Flex justifyContent='center' alignItems='center' minH='100vh'>
         <Spinner color='black' />
       </Flex>
     );
 
+  if (status === 'unauthenticated' || session?.user?.email !== '1')
+    router.push('/');
+
   const handleClick = (eventId: string) => {
-    useRemoveEvent(eventId, community?._id || '', refetch);
+    useRemoveEvent(eventId, community?._id || '', refetch, setIsLoading);
   };
 
   return (
@@ -62,6 +71,7 @@ const RemoveEvent = () => {
                   aria-label='Go back'
                   icon={<FaRegTrashAlt />}
                   colorScheme='red'
+                  isLoading={isLoading}
                   onClick={() => handleClick(event._id)}
                 />
               </Td>
