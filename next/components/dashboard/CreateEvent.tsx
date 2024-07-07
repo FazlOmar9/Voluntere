@@ -70,7 +70,7 @@ const CreateEvent = () => {
       isClosable: true,
     });
     reset();
-  }, [isSubmitted]);
+  }, [isSubmitted, toast, reset]);
 
   useEffect(() => {
     if (!error) return;
@@ -81,7 +81,7 @@ const CreateEvent = () => {
       duration: 5000,
       isClosable: true,
     });
-  }, [error]);
+  }, [error, toast]);
 
   if (l1 || status === 'loading') {
     return (

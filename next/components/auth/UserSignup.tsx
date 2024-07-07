@@ -87,7 +87,7 @@ const UserSignup = () => {
       isClosable: true,
     });
     reset();
-  }, [isSubmitted]);
+  }, [isSubmitted, toast, reset]);
 
   useEffect(() => {
     if (!error) return;
@@ -98,7 +98,7 @@ const UserSignup = () => {
       duration: 5000,
       isClosable: true,
     });
-  }, [error]);
+  }, [error, toast]);
 
   const { status } = useSession();
   const router = useRouter();

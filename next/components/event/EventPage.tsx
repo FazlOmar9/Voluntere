@@ -53,7 +53,7 @@ const EventPage = ({ id }: { id: string }) => {
     if (event?.status === eventStatus) return;
     if (!eventStatus || !event) return;
     apiClient.put(`/event/${event._id}`, { status: eventStatus });
-  }, [eventStatus]);
+  }, [eventStatus, event]);
 
   if (isLoading)
     return (

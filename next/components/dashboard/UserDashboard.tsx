@@ -95,6 +95,7 @@ const UserDashboard = () => {
                   width={'250px'}
                   borderRadius={'full'}
                   crossOrigin='anonymous'
+                  alt='User Profile Image'
                   src={
                     user?.profileImage ||
                     'https://images.dog.ceo/breeds/retriever-golden/n02099601_5544.jpg'

@@ -20,7 +20,7 @@ import { useSession } from 'next-auth/react';
 import EventBadge from '../event/EventBadge';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import useRemoveEvent from '@/hooks/useRemoveEvent';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const RemoveEvent = () => {
@@ -30,7 +30,10 @@ const RemoveEvent = () => {
   );
   const { data: events, refetch } = useEvent(community?._id || '', 1000);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [eventId, setEventId] = useState<string>('');
   const router = useRouter();
+
+  useRemoveEvent(eventId, community?._id || '', refetch, setIsLoading);
 
   if (l1 || status === 'loading')
     return (
@@ -42,9 +45,7 @@ const RemoveEvent = () => {
   if (status === 'unauthenticated' || session?.user?.email !== '1')
     router.push('/');
 
-  const handleClick = (eventId: string) => {
-    useRemoveEvent(eventId, community?._id || '', refetch, setIsLoading);
-  };
+  const handleClick = (eventId: string) => setEventId(eventId);
 
   return (
     <Box p='10px 10px 10px 10px' minH={'100vh'}>

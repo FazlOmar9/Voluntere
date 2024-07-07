@@ -81,7 +81,7 @@ const CommunitySignup = () => {
       isClosable: true,
     });
     reset();
-  }, [isSubmitted]);
+  }, [isSubmitted, reset, toast]);
 
   useEffect(() => {
     if (!error) return;
@@ -92,7 +92,7 @@ const CommunitySignup = () => {
       duration: 5000,
       isClosable: true,
     });
-  }, [error]);
+  }, [error, toast]);
 
   const { status } = useSession();
   const router = useRouter();
