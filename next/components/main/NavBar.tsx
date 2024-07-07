@@ -311,6 +311,20 @@ const MobileNav = () => {
           </Text>
         </Flex>
       </Stack>
+      <Stack spacing={4} display={displayLogout === 'block' ? 'none' : 'block'}>
+        <Flex
+          py={2}
+          justify={'space-between'}
+          align={'center'}
+          _hover={{
+            textDecoration: 'none',
+          }}
+        >
+          <Text as={'a'} fontWeight={600} color={'blue.500'} href='/signup'>
+            Sign Up
+          </Text>
+        </Flex>
+      </Stack>
     </Stack>
   );
 };
