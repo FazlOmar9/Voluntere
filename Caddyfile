@@ -1,0 +1,7 @@
+{
+  email fazlomr3@gmail.com
+}
+
+voluntere.dev-fazl.co {
+  reverse_proxy http://next:3000
+}
