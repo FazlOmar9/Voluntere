@@ -5,3 +5,7 @@
 voluntere.dev-fazl.co {
   reverse_proxy http://next:3000
 }
+
+voluntere.dev-fazl.co:3010 {
+  reverse_proxy http://backend:3000
+}

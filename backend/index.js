@@ -9,7 +9,7 @@ const port = process.env.PORT || 3010;
 
 // Connect to MongoDB
 mongoose
-  .connect('mongodb://127.0.0.1:27017/voluntere')
+  .connect('mongodb://mongodb:27017/voluntere')
   .then(() => {
     console.log('Connected to MongoDB');
   })
@@ -19,7 +19,7 @@ mongoose
 
 app.use(
   cors({
-    origin: process.env.ORIGIN || 'http://localhost:3000',
+    origin: process.env.ORIGIN || 'https://voluntere.dev-fazl.co',
     credentials: true,
   })
 );

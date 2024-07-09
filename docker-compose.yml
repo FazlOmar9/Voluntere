@@ -1,23 +1,18 @@
-version: '3'
-
 services:
   backend:
     build: ./backend
-    ports:
-      - '3010:3010'
     volumes:
-      - ./backend/uploads:/usr/src/app/uploads  # Adjusted mapping
+      - ./backend/uploads:/usr/src/app/uploads # Adjusted mapping
 
   next:
     build: ./next
-    ports:
-      - '3000:3000'
-  
+
   caddy:
     image: caddy
     ports:
       - '80:80'
       - '443:443'
+      - '3010:3010'
     volumes:
       - ./caddy/data/:/data/
       - ./caddy/config/:/config/
@@ -25,7 +20,5 @@ services:
 
   mongodb:
     image: mongo
-    ports:
-      - '27017:27017'
     volumes:
       - ./data/db:/data/db
