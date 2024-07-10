@@ -39,7 +39,7 @@ export type FormDataSI = z.infer<typeof schema>;
 
 const SignIn = () => {
   const router = useRouter();
-  const { status } = useSession();
+  const { data: session, status } = useSession();
 
   const [showPassword, setShowPassword] = useState(false);
   const [isModerator, setIsModerator] = useState(false);
@@ -79,7 +79,8 @@ const SignIn = () => {
       </Flex>
     );
   } else if (status === 'authenticated') {
-    router.push('/');
+    if (session.user?.email === '1') router.push('/moderator');
+    else router.push('/dashboard');
     return null;
   }
 

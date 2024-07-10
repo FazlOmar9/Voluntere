@@ -94,9 +94,9 @@ const CommunitySignup = () => {
     });
   }, [error, toast]);
 
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
-  
+
   if (status === 'loading') {
     return (
       <Flex minH={'100vh'} align={'center'} justify={'center'}>
@@ -104,7 +104,8 @@ const CommunitySignup = () => {
       </Flex>
     );
   } else if (status === 'authenticated') {
-    router.push('/');
+    if (session.user?.email === '1') router.push('/moderator');
+    else router.push('/dashboard');
     return null;
   }
 

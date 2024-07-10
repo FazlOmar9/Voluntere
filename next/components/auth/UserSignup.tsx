@@ -100,7 +100,7 @@ const UserSignup = () => {
     });
   }, [error, toast]);
 
-  const { status } = useSession();
+  const { data:session, status } = useSession();
   const router = useRouter();
   
   if (status === 'loading') {
@@ -110,7 +110,8 @@ const UserSignup = () => {
       </Flex>
     );
   } else if (status === 'authenticated') {
-    router.push('/');
+    if (session.user?.email === '1') router.push('/moderator');
+    else router.push('/dashboard');
     return null;
   }
 

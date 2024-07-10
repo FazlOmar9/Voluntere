@@ -132,6 +132,12 @@ const EventPage = ({ id }: { id: string }) => {
     isOwner = community?.mod === session?.user?.image;
   }
 
+  const hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  const formattedHours = ((hours + 11) % 12) + 1; // Convert 24h to 12h format
+  const formattedMinutes = minutes < 10 ? `0${minutes}` : minutes;
+
   return (
     <>
       <Breadcrumb
@@ -163,7 +169,11 @@ const EventPage = ({ id }: { id: string }) => {
                 <Stack>
                   <Image
                     crossOrigin='anonymous'
-                    src={event?.banner || 'https://placehold.co/600x400'}
+                    src={
+                      event?.banner ||
+                      community?.banner ||
+                      'https://placehold.co/600x400'
+                    }
                     alt='event image'
                     width='300px'
                     height='200px'
@@ -245,11 +255,7 @@ const EventPage = ({ id }: { id: string }) => {
                   <Heading size='sm' fontWeight='normal'>
                     Time:{' '}
                     <Text fontWeight='bold' pb='10px'>
-                      {date.toLocaleTimeString('en-US', {
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        hour12: true,
-                      })}
+                      {`${formattedHours}:${formattedMinutes} ${ampm}`}
                     </Text>
                   </Heading>
                   {isOwner ? (
@@ -281,7 +287,14 @@ const EventPage = ({ id }: { id: string }) => {
                       minW={{ base: '100%', md: '100%', lg: '220px' }}
                       isLoading={isBtnLoading}
                       onClick={handleClick}
-                      isDisabled={session?.user?.email === '1'}
+                      isDisabled={
+                        session?.user?.email === '1' ||
+                        event?.status === 'Ended' ||
+                        event?.status === 'Cancelled' ||
+                        event?.status === 'Closed' ||
+                        (event?.volunteers.length || 0) >=
+                          (event?.requirement || 10)
+                      }
                     >
                       {isMember ? 'Leave' : 'Join'}
                     </Button>

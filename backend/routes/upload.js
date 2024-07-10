@@ -28,7 +28,7 @@ router.post('/', multer({ storage }).single('file'), async (req, res) => {
       return res.status(400).send('No file uploaded.');
     }
     const newImageUrl =
-      'https://voluntere.dev-fazl.co:3010/images/' +
+      'http://localhost:3010/images/' +
       req.body.type +
       '-' +
       req.body.id +

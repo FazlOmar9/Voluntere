@@ -112,7 +112,6 @@ const CommunityPage = ({ id }: { id: string }) => {
       <Divider borderColor='gray.400' />
       <Box p='20px 10px 10px 20px' minH='100vh'>
         <Card
-          p='10px 10px 10px 10px'
           width='100%'
           maxW='1000px'
           bgColor='rgba(0, 0, 0, 0.05)'
@@ -134,7 +133,7 @@ const CommunityPage = ({ id }: { id: string }) => {
               />
               <Stack spacing={'50px'}>
                 <Stack>
-                  <Heading size='xl' pt='10px'>
+                  <Heading size='xl'>
                     {community?.name}
                   </Heading>
                   <Heading size='sm' fontWeight='normal'>

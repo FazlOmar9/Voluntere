@@ -28,24 +28,15 @@ const EventCard = ({ children: event }: Props) => {
       transition='box-shadow 0.2s'
       href={redirect}
     >
-      {event.banner ? (
-        <Image
-          crossOrigin='anonymous'
-          src={event.banner}
-          alt='event image'
-          width='100%'
-          height='150px'
-          objectFit='cover'
-        />
-      ) : (
-        <Image
-          src='https://via.placeholder.com/150'
-          alt='event image'
-          width='100%'
-          height='150px'
-          objectFit='cover'
-        />
-      )}
+      <Image
+        crossOrigin='anonymous'
+        src={event.banner || 'https://placehold.co/600x400'}
+        alt='event image'
+        width='100%'
+        height='150px'
+        objectFit='cover'
+      />
+
       <CardHeader borderBottom='1px'>
         <Box
           display='-webkit-box'

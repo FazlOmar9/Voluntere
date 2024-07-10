@@ -44,7 +44,16 @@ export default function AboutGoal() {
               <SimpleGrid columns={{ base: 1, md: 2 }} spacing={10}>
                 {stats.map((stat) => (
                   <Box key={stat.title}>
-                    <Text fontSize={'xl'} color={'gray.400'}>
+                    <Text
+                      fontFamily={'heading'}
+                      fontSize={'3xl'}
+                      fontWeight={'bold'}
+                      color={'black'}
+                      mb={3}
+                    >
+                      {stat.title}
+                    </Text>
+                    <Text fontSize={'lg'} color={'gray.500'}>
                       {stat.content}
                     </Text>
                   </Box>
@@ -59,45 +68,25 @@ export default function AboutGoal() {
 }
 
 const StatsText = ({ children }: { children: ReactNode }) => (
-  <Text as={'span'} fontWeight={700} color={'gray.700'}>
-    {children}<br />
+  <Text as={'span'} fontWeight={'500'} color={'gray.700'}>
+    {children}
   </Text>
 );
 
 const stats = [
   {
-    title: '10+',
+    title: '20+',
     content: (
       <>
-        <StatsText>10+ Software modules</StatsText> for detailed monitoring and
-        real-time analytics
+        <StatsText>Communities</StatsText> for you to join and explore.
       </>
     ),
   },
   {
-    title: '24/7',
+    title: '60+',
     content: (
       <>
-        <StatsText>24/7 Analytics</StatsText> enabled right in your dashboard without
-        history limitations
-      </>
-    ),
-  },
-  {
-    title: '13%',
-    content: (
-      <>
-        <StatsText>13% Farms</StatsText> in North America has chosen NewLife™ as
-        their management solution
-      </>
-    ),
-  },
-  {
-    title: '250M+',
-    content: (
-      <>
-        <StatsText>250M+ Plants</StatsText> currently connected and monitored by the
-        NewLife™ software
+        <StatsText>Events</StatsText> to participate in and contribute.
       </>
     ),
   },

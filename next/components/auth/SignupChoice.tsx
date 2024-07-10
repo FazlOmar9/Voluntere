@@ -18,7 +18,7 @@ const Choice = () => {
   const vmsg = `I'm a volunteer`;
   const cmsg = `I'm a community`;
 
-  const { status } = useSession();
+  const { data: session, status } = useSession();
   const router = useRouter();
   
   if (status === 'loading') {
@@ -28,7 +28,8 @@ const Choice = () => {
       </Flex>
     );
   } else if (status === 'authenticated') {
-    router.push('/');
+    if (session.user?.email === '1') router.push('/moderator');
+    else router.push('/dashboard');
     return null;
   }
 

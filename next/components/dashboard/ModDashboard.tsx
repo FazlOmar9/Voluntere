@@ -79,7 +79,7 @@ const ModDashboard = () => {
     );
 
   if (status === 'unauthenticated' || session?.user?.email !== '1')
-    router.push('/');
+    router.push('/signin');
 
   if (community !== undefined && events !== undefined)
     return (

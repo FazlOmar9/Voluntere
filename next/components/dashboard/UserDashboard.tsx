@@ -72,7 +72,7 @@ const UserDashboard = () => {
     );
 
   if (status === 'unauthenticated' || session?.user?.email !== '0')
-    router.push('/');
+    router.push('/signin');
 
   if (page === 0) {
     return (
