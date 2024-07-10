@@ -20,7 +20,7 @@ import { useSession } from 'next-auth/react';
 import EventBadge from '../event/EventBadge';
 import { FaRegTrashAlt } from 'react-icons/fa';
 import useRemoveEvent from '@/hooks/useRemoveEvent';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const RemoveEvent = () => {
@@ -28,14 +28,18 @@ const RemoveEvent = () => {
   const { data: community, isLoading: l1 } = useCommunityByMod(
     session?.user?.image || ''
   );
-  const { data: events, refetch } = useEvent(community?._id || '', 1000);
+  const {
+    data: events,
+    isLoading: l2,
+    refetch,
+  } = useEvent(community?._id || '', 1000);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [eventId, setEventId] = useState<string>('');
   const router = useRouter();
 
   useRemoveEvent(eventId, community?._id || '', refetch, setIsLoading);
 
-  if (l1 || status === 'loading')
+  if (l1 || l2 || status === 'loading' || !events)
     return (
       <Flex justifyContent='center' alignItems='center' minH='100vh'>
         <Spinner color='black' />

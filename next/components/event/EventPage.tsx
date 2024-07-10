@@ -221,6 +221,14 @@ const EventPage = ({ id }: { id: string }) => {
                       {event?.volunteers.length}/{event?.requirement}
                     </Text>
                   </Heading>
+                  <Button
+                    color={'blue.700'}
+                    as={'a'}
+                    variant={'link'}
+                    href={`/communities/${community?._id}`}
+                  >
+                    Go to community page
+                  </Button>
                 </Stack>
               </Stack>
             </CardHeader>

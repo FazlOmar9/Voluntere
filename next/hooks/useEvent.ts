@@ -28,6 +28,7 @@ const useEvent = (community?: string, limit?: number) => {
   return useQuery({
     queryKey: ['events'],
     queryFn: () => fetchEvents(community, limit),
+    enabled: community === '' ? !!community : true,
   });
 };
 
